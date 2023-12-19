@@ -23,7 +23,7 @@
         <div class="card-header">
           <h4 class="card-title float-start">List of <span class="text-capitalize"><?= $_page->title; ?></span></h4>
           <div class="float-end">
-            <a href="<?= base_url($_page->link . '/new'); ?>" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Create <?= $_page->title; ?></a>
+            <a href="<?= base_url($_page->link . '/new'); ?>" class="btn btn-secondary btn-sm"><i class="fa fa-arrow-left"></i> Create <?= $_page->title; ?></a>
           </div>
 
         </div>

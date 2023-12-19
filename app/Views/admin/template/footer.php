@@ -13,6 +13,17 @@
 
 <script src="<?= base_url(); ?>public/assets/extensions/summernote/summernote-bs5.min.js"></script>
 
+<script src="<?= base_url(); ?>public/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?= base_url(); ?>public/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="<?= base_url(); ?>public/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="<?= base_url(); ?>public/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="<?= base_url(); ?>public/assets/plugins/jszip/jszip.min.js"></script>
+<script src="<?= base_url(); ?>public/assets/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="<?= base_url(); ?>public/assets/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="<?= base_url(); ?>public/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="<?= base_url(); ?>public/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="<?= base_url(); ?>public/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
 <?= initAlert(); ?>
 <script>
   document.querySelector('.burger-btn').addEventListener('click', function() {
@@ -51,6 +62,22 @@
       [5, 100, 1000, "ALL"],
     ],
   })
+
+
+  $("#table-export").DataTable({
+    "responsive": true,
+    dom: 'Bflrtip',
+    buttons: [{
+      extend: 'excel',
+      className: "btn bg-tranparent btn-sm btn-success",
+      footer: true
+    }, ],
+    "pageLength": 5,
+    "lengthMenu": [
+      [5, 100, 1000, -1],
+      [5, 100, 1000, "ALL"],
+    ],
+  });
 </script>
 <?= $this->renderSection('script'); ?>
 </body>

@@ -115,3 +115,7 @@ $routes->group('settings/email_templates', function ($routes) {
   });
 });
 $routes->resource('settings/email_templates', ['controller' => '\App\Controllers\EmailTemplates',]);
+
+$routes->post('planned_materials/import', '\App\Controllers\PlannedMaterials::import');
+$routes->get('planned_materials/ajax_ipcode', '\App\Controllers\PlannedMaterials::ajaxIpCode');
+$routes->resource('planned_materials', ['controller' => '\App\Controllers\PlannedMaterials']);

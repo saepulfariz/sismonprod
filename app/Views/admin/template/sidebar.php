@@ -148,6 +148,17 @@
           </li>
         <?php endif; ?>
 
+        <?php if (hasPermissions('planned_materials_list')) : ?>
+          <li class="sidebar-item  <?= (@$_page->menu == 'planned_materials') ? 'active' : '' ?>">
+            <a href="<?= base_url('planned_materials'); ?>" class='sidebar-link '>
+              <i class="bi bi-grid-fill"></i>
+              <span class="text-capitalize">
+                Planned Materials
+              </span>
+            </a>
+          </li>
+        <?php endif; ?>
+
       </ul>
     </div>
   </div>

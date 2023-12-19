@@ -139,6 +139,27 @@ class SeedPermissions extends Seeder
                 'code'    => 'email_template_variables_delete',
             ],
 
+            [
+                'title'    => 'Planned Materials List',
+                'code'    => 'planned_materials_list',
+            ],
+            [
+                'title'    => 'Planned Materials Add',
+                'code'    => 'planned_materials_add',
+            ],
+            [
+                'title'    => 'Planned Materials Edit',
+                'code'    => 'planned_materials_edit',
+            ],
+            [
+                'title'    => 'Planned Materials Delete',
+                'code'    => 'planned_materials_delete',
+            ],
+            [
+                'title'    => 'Planned Materials Import',
+                'code'    => 'planned_materials_import',
+            ],
+
         ];
 
         $this->db->table('permissions')->insertBatch($data);
