@@ -58,6 +58,9 @@
 
   <link rel="stylesheet" href="<?= base_url(); ?>public/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="<?= base_url(); ?>public/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+  <link rel="stylesheet" href="<?= base_url(); ?>public/assets/plugins/select2-bootstrap-5/select2-bootstrap-5-theme.css">
+  <link rel="stylesheet" href="<?= base_url(); ?>public/assets/plugins/select2js/css/select2.min.css">
 </head>
 
 <body>

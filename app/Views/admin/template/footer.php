@@ -24,6 +24,17 @@
 <script src="<?= base_url(); ?>public/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="<?= base_url(); ?>public/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
+<script src="<?= base_url(); ?>public/assets/plugins/select2js/js/select2.min.js"></script>
+<script>
+  // $.fn.select2.defaults.set("theme", "bootstrap");
+  $("select.form-control").select2({
+    theme: "bootstrap-5",
+    // width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+    width: '100%',
+    placeholder: $(this).data('placeholder'),
+  })
+</script>
+
 <?= initAlert(); ?>
 <script>
   document.querySelector('.burger-btn').addEventListener('click', function() {
