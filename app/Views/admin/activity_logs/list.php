@@ -23,16 +23,16 @@
     <div class="card-body">
       <form action="" method="get">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-3 mb-2">
             <div class="input-group mb-3">
               <span class="input-group-text" id="ip">IP</span>
               <input type="text" class="form-control" id="ip" name="ip" value="<?= $ip; ?>">
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4 mb-2">
             <div class="input-group mb-3">
-              <span class="input-group-text" id="ip">USER</span>
-              <select name="user_id" id="user_id" class="form-control">
+              <div class="input-group-text">USER</div>
+              <select name="user_id" id="user_id" class="form-select">
                 <option value="" selected>== ALL ==</option>
                 <?php foreach ($users as $d) : ?>
                   <?php if ($user_id == $d['id']) : ?>

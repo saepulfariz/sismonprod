@@ -140,6 +140,23 @@ class SeedPermissions extends Seeder
             ],
 
             [
+                'title'    => 'Departments List',
+                'code'    => 'departments_list',
+            ],
+            [
+                'title'    => 'Departments Add',
+                'code'    => 'departments_add',
+            ],
+            [
+                'title'    => 'Departments Edit',
+                'code'    => 'departments_edit',
+            ],
+            [
+                'title'    => 'Departments Delete',
+                'code'    => 'departments_delete',
+            ],
+
+            [
                 'title'    => 'Planned Materials List',
                 'code'    => 'planned_materials_list',
             ],

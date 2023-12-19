@@ -148,6 +148,17 @@
           </li>
         <?php endif; ?>
 
+        <?php if (hasPermissions('departments_list')) : ?>
+          <li class="sidebar-item  <?= (@$_page->menu == 'departments') ? 'active' : '' ?>">
+            <a href="<?= base_url('departments'); ?>" class='sidebar-link '>
+              <i class="bi bi-grid-fill"></i>
+              <span class="text-capitalize">
+                Departments
+              </span>
+            </a>
+          </li>
+        <?php endif; ?>
+
         <?php if (hasPermissions('planned_materials_list')) : ?>
           <li class="sidebar-item  <?= (@$_page->menu == 'planned_materials') ? 'active' : '' ?>">
             <a href="<?= base_url('planned_materials'); ?>" class='sidebar-link '>

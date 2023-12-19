@@ -1,0 +1,74 @@
+<?= $this->extend('admin/template/index') ?>
+
+<?= $this->section('content') ?>
+<div class="page-title">
+  <div class="row">
+    <div class="col-12 col-md-6 order-md-1 order-last">
+      <h3 class="text-capitalize"><?= $_page->menu; ?></h3>
+    </div>
+    <div class="col-12 col-md-6 order-md-2 order-first">
+      <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+
+        <?= breadcrumb(); ?>
+      </nav>
+    </div>
+  </div>
+</div>
+<section class="section">
+  <form action="<?= base_url($_page->link . '/' . $data['id']); ?>" method="post" enctype="multipart/form-data">
+    <?= csrf_field(); ?>
+    <input type='hidden' name='_method' value='PUT' />
+    <div class="row">
+      <div class="col-md-12 mb-2">
+
+        <div class="card">
+
+          <div class="card-header">
+            <h4 class="card-title float-start">List of <span class="text-capitalize"><?= $_page->title; ?></span></h4>
+            <div class="float-end">
+              <a href="<?= base_url($_page->link . ''); ?>" class="btn btn-secondary btn-sm"><i class="fa fa-arrow-left"></i> <?= $_page->title; ?></a>
+            </div>
+
+          </div>
+
+          <?= csrf_field(); ?>
+          <div class="card-body">
+
+            <div class="row">
+              <div class="col-md-12 mb-2">
+
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control <?= ($error = validation_show_error('name')) ? 'border-danger' : ''; ?>" id="name" name="name" placeholder="Name" value="<?= $data['name']; ?>">
+                  <?= ($error) ? '<span class="error text-danger mb-2">' . $error . '</span>' : ''; ?>
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+
+
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col">
+                <a href="<?= base_url($_page->link); ?>" onclick="return confirm('Are you sure you want to leave?')" class="btn btn-flat btn-danger"> Cancel</a>
+                <button type="submit" class="btn btn-flat btn-primary"> Submit</button>
+              </div>
+              <div class="col text-end">
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+  </form>
+</section>
+<?= $this->endSection('content') ?>
