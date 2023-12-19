@@ -23,6 +23,7 @@ class UserModel extends BaseModel
         'address',
         'last_login',
         'role_id',
+        'section_id',
         'is_active',
         'email_verified_at',
     ];

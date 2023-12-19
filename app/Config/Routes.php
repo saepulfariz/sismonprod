@@ -121,4 +121,5 @@ $routes->get('planned_materials/ajax_ipcode', '\App\Controllers\PlannedMaterials
 $routes->resource('planned_materials', ['controller' => '\App\Controllers\PlannedMaterials']);
 
 $routes->resource('departments', ['controller' => '\App\Controllers\Departments']);
+$routes->get('sections/ajax_sections', '\App\Controllers\Sections::ajaxSections');
 $routes->resource('sections', ['controller' => '\App\Controllers\Sections']);

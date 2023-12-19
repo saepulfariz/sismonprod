@@ -55,7 +55,9 @@ class Users extends AdminBaseController
 
         $this->permissionCheck('users_add');
         $data = [
-            'roles' => model('\App\Models\RoleModel')->findAll()
+            'roles' => model('\App\Models\RoleModel')->findAll(),
+            'departments' => (new \App\Models\DepartmentModel)->findAll(),
+            'sections' => (new \App\Models\SectionModel)->findAll(),
         ];
 
         return view($this->view . '/add', $data);
@@ -74,6 +76,7 @@ class Users extends AdminBaseController
             // 'phone' => 'required',
             // 'address' => 'required',
             'role_id' => 'required',
+            'section_id' => 'required',
             'is_active' => 'required',
             'email' => 'required|is_unique[users.email]|valid_email',
             'username' => 'required|is_unique[users.username]',
@@ -103,6 +106,7 @@ class Users extends AdminBaseController
             'is_active' => htmlspecialchars($this->request->getVar('is_active')),
             'email' => htmlspecialchars($this->request->getVar('email')),
             'username' => htmlspecialchars($this->request->getVar('username')),
+            'section_id' => htmlspecialchars($this->request->getVar('section_id')),
         ];
 
         if ($dataBerkas->getError() != 4) {
@@ -133,7 +137,7 @@ class Users extends AdminBaseController
 
         $this->permissionCheck('users_edit');
 
-        $result = $this->model->find($id);
+        $result = $this->model->select('users.*, dept_id')->join('sections', 'sections.id = users.section_id')->find($id);
         if (!$result) {
             setAlert('warning', 'Warning', 'NOT VALID');
             return redirect()->to($this->link);
@@ -141,7 +145,9 @@ class Users extends AdminBaseController
 
         $data = [
             'data' => $result,
-            'roles' => model('\App\Models\RoleModel')->findAll()
+            'roles' => model('\App\Models\RoleModel')->findAll(),
+            'departments' => (new \App\Models\DepartmentModel)->findAll(),
+            'sections' => (new \App\Models\SectionModel)->findAll(),
         ];
 
         return view($this->view . '/edit', $data);
@@ -166,6 +172,7 @@ class Users extends AdminBaseController
             'is_active' => 'required',
             'email' => 'required',
             'username' => 'required',
+            'section_id' => 'required',
         ];
 
 
@@ -205,6 +212,7 @@ class Users extends AdminBaseController
             'is_active' => htmlspecialchars($this->request->getVar('is_active')),
             'email' => htmlspecialchars($this->request->getVar('email')),
             'username' => htmlspecialchars($this->request->getVar('username')),
+            'section_id' => htmlspecialchars($this->request->getVar('section_id')),
         ];
 
 

@@ -25,6 +25,11 @@ class SeedSections extends Seeder
                 'dept_id'    => 3,
                 'name'    => 'Trainer',
             ],
+            [
+                'dept_id'    => 4,
+                'name'    => 'Staff',
+            ],
+
 
         ];
 

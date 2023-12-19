@@ -61,6 +61,8 @@ class PlannedMaterials extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('cid', 'users', 'id', '', '', 'planned_materials_cid_users_id');
+        $this->forge->addForeignKey('uid', 'users', 'id', '', '', 'planned_materials_uid_users_id');
         $this->forge->createTable('planned_materials');
     }
 

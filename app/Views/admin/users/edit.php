@@ -111,6 +111,33 @@
             </div>
 
             <div class="form-group">
+              <label for="dept_id">Departments</label>
+              <select name="dept_id" id="dept_id" class="form-control">
+                <option selected disabled>== DEPT ==</option>
+                <?php foreach ($departments as $d) : ?>
+                  <?php if ($data['dept_id'] == $d['id']) : ?>
+                    <option selected value="<?= $d['id']; ?>"><?= $d['name']; ?></option>
+                  <?php else : ?>
+                    <option value="<?= $d['id']; ?>"><?= $d['name']; ?></option>
+                  <?php endif; ?>
+                <?php endforeach; ?>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="section_id">Sections</label>
+              <select name="section_id" id="section_id" disabled class="form-control">
+                <?php foreach ($sections as $d) : ?>
+                  <?php if ($data['section_id'] == $d['id']) : ?>
+                    <option selected value="<?= $d['id']; ?>"><?= $d['name']; ?></option>
+                  <?php else : ?>
+                    <option value="<?= $d['id']; ?>"><?= $d['name']; ?></option>
+                  <?php endif; ?>
+                <?php endforeach; ?>
+              </select>
+            </div>
+
+            <div class="form-group">
               <label for="is_active">Status</label>
               <select name="is_active" id="is_active" class="form-control">
                 <option value="1" <?= ($data['is_active'] == 1) ? 'selected' : ''; ?>>Active</option>
@@ -194,5 +221,39 @@
       .replace(/ /g, '_')
       .replace(/[^\w-]+/g, '');;
   }
+
+
+  function getSections() {
+    var dept_id = $('#dept_id').val();
+    $.ajax({
+      url: '<?= base_url('sections/ajax_sections'); ?>',
+      method: 'GET', // POST
+      data: {
+        dept_id: dept_id
+      },
+      dataType: 'json', // json
+      success: function(data) {
+        if (data.error != true) {
+          var list = '';
+          for (let index = 0; index < data.data.length; index++) {
+            const element = data.data[index];
+            list += '<option value="' + element.id + '">' + element.name + '</option>';
+          }
+          $('#section_id').removeAttr('disabled');
+          $('#section_id').html(list);
+        } else {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Warning',
+            text: data.message
+          })
+        }
+      }
+    });
+
+  }
+
+  getSections();
+  $('#dept_id').on('change', getSections);
 </script>
 <?= $this->endSection('script') ?>

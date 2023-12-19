@@ -162,4 +162,18 @@ class Sections extends AdminBaseController
 
         return redirect()->to($this->link);
     }
+
+    public function ajaxSections()
+    {
+        $dept_id = $this->request->getVar('dept_id');
+        $result = $this->model->where('dept_id', $dept_id)->findAll();
+        if ($result) {
+            $data['error'] = false;
+            $data['data'] = $result;
+        } else {
+            $data['error'] = true;
+            $data['message'] = 'Not Found';
+        }
+        return json_encode($data);
+    }
 }

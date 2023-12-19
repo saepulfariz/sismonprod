@@ -59,6 +59,11 @@ class Users extends Migration
                 'constraint'     => 11,
                 'unsigned'       => true,
             ],
+            'section_id' => [
+                'type'           => 'INT',
+                'constraint'     => 11,
+                'unsigned'       => true,
+            ],
             'is_active' => [
                 'type'           => 'INT',
                 'constraint'     => 1,
@@ -109,6 +114,7 @@ class Users extends Migration
         RESTRICT (Default)
         */
         $this->forge->addForeignKey('role_id', 'roles', 'id', '', '', 'users_role_id_roles_id');
+        $this->forge->addForeignKey('section_id', 'sections', 'id', '', '', 'users_section_id_sections_id');
         $this->forge->createTable('users');
     }
 
