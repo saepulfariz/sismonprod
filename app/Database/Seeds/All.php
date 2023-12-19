@@ -9,6 +9,7 @@ class All extends Seeder
     public function run()
     {
         $this->call('SeedDepartments');
+        $this->call('SeedSections');
         $this->call('SeedSettings');
         $this->call('SeedRoles');
         $this->call('SeedUsers');

@@ -5,26 +5,28 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Controllers\AdminBaseController;
 
-class Departments extends AdminBaseController
+class Sections extends AdminBaseController
 {
 
-    public $title = 'Departments';
-    public $menu = 'departments';
-    public $link = 'departments';
-    private $view = 'admin/departments';
+    public $title = 'Sections';
+    public $menu = 'sections';
+    public $link = 'sections';
+    private $view = 'admin/sections';
+    private $modeldept;
 
     public function __construct()
     {
-        $this->model = new \App\Models\DepartmentModel();
+        $this->model = new \App\Models\SectionModel();
+        $this->modeldept = new \App\Models\DepartmentModel();
     }
 
     public function index()
     {
 
-        $this->permissionCheck('departments_list');
+        $this->permissionCheck('sections_list');
 
         $data = [
-            'data' => $this->model->orderBy('id', 'DESC')->findAll()
+            'data' => $this->model->select('sections.*, departments.name as department')->join('departments', 'departments.id  = sections.dept_id')->orderBy('id', 'DESC')->findAll()
         ];
         return view($this->view . '/list', $data);
     }
@@ -37,19 +39,21 @@ class Departments extends AdminBaseController
     public function new()
     {
 
-        $this->permissionCheck('departments_add');
+        $this->permissionCheck('sections_add');
+        $data['departments'] = $this->modeldept->findAll();
 
-        return view($this->view . '/add');
+        return view($this->view . '/add', $data);
     }
 
 
 
     public function create()
     {
-        $this->permissionCheck('departments_add');
+        $this->permissionCheck('sections_add');
 
         $rules = [
             'name' => 'required',
+            'dept_id' => 'required',
         ];
 
         $input = $this->request->getVar();
@@ -60,6 +64,7 @@ class Departments extends AdminBaseController
 
         $data = [
             'name' => htmlspecialchars($this->request->getVar('name')),
+            'dept_id' => htmlspecialchars($this->request->getVar('dept_id')),
         ];
 
 
@@ -79,7 +84,7 @@ class Departments extends AdminBaseController
     public function edit($id)
     {
 
-        $this->permissionCheck('departments_edit');
+        $this->permissionCheck('sections_edit');
 
         $result = $this->model->find($id);
         if (!$result) {
@@ -89,6 +94,7 @@ class Departments extends AdminBaseController
 
         $data = [
             'data' => $result,
+            'departments' => $this->modeldept->findAll()
         ];
 
         return view($this->view . '/edit', $data);
@@ -99,7 +105,7 @@ class Departments extends AdminBaseController
     public function update($id)
     {
 
-        $this->permissionCheck('departments_edit');
+        $this->permissionCheck('sections_edit');
 
         $result = $this->model->find($id);
         if (!$result) {
@@ -109,6 +115,7 @@ class Departments extends AdminBaseController
 
         $rules = [
             'name' => 'required',
+            'dept_id' => 'required',
         ];
 
         $input = $this->request->getVar();
@@ -120,6 +127,7 @@ class Departments extends AdminBaseController
 
         $data = [
             'name' => htmlspecialchars($this->request->getVar('name')),
+            'dept_id' => htmlspecialchars($this->request->getVar('dept_id')),
         ];
 
         $res = $this->model->update($id, $data);
@@ -138,7 +146,7 @@ class Departments extends AdminBaseController
     public function delete($id)
     {
 
-        $this->permissionCheck('departments_delete');
+        $this->permissionCheck('sections_delete');
 
         $result = $this->model->find($id);
         if (!$result) {

@@ -171,11 +171,17 @@ class SeedRolePermissions extends Seeder
                 'permission_id'    => 34,
             ],
 
-            // planned materials
+
+            // sections
+            [
+                'role_id'    => 1,
+                'permission_id'    => 34,
+            ],
             [
                 'role_id'    => 1,
                 'permission_id'    => 35,
             ],
+
             [
                 'role_id'    => 1,
                 'permission_id'    => 36,
@@ -184,13 +190,27 @@ class SeedRolePermissions extends Seeder
                 'role_id'    => 1,
                 'permission_id'    => 37,
             ],
-            [
-                'role_id'    => 1,
-                'permission_id'    => 37,
-            ],
+
+            // planned materials
             [
                 'role_id'    => 1,
                 'permission_id'    => 38,
+            ],
+            [
+                'role_id'    => 1,
+                'permission_id'    => 39,
+            ],
+            [
+                'role_id'    => 1,
+                'permission_id'    => 40,
+            ],
+            [
+                'role_id'    => 1,
+                'permission_id'    => 41,
+            ],
+            [
+                'role_id'    => 1,
+                'permission_id'    => 42,
             ],
         ];
 

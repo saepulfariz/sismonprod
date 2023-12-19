@@ -157,6 +157,23 @@ class SeedPermissions extends Seeder
             ],
 
             [
+                'title'    => 'Sections List',
+                'code'    => 'sections_list',
+            ],
+            [
+                'title'    => 'Sections Add',
+                'code'    => 'sections_add',
+            ],
+            [
+                'title'    => 'Sections Edit',
+                'code'    => 'sections_edit',
+            ],
+            [
+                'title'    => 'Sections Delete',
+                'code'    => 'sections_delete',
+            ],
+
+            [
                 'title'    => 'Planned Materials List',
                 'code'    => 'planned_materials_list',
             ],
