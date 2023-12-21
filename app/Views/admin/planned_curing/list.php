@@ -95,7 +95,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>Download format excel Upload <a href="<?= base_url('public/example/template_inbound_planner.xlsx'); ?>">Disini</a>, </p>
+          <p>Download format excel Upload <a href="<?= base_url('public/example/template_curing_planner.xlsx'); ?>">Disini</a>, </p>
           <div>
             <ul>
               <li>Aplikasi Akomodir <b>7 Hari</b> Planning</li>
