@@ -49,7 +49,7 @@ class PcsModel extends Model
     public function getMaterial()
     {
         $builder = $this->pcs->table('MD_MATERIALS');
-        $builder->select('MAT_CODE');
+        $builder->select('MAT_CODE, MAT_SAP_CODE');
         $builder->where('SFC_CODE', 'AL');
         $builder->where('MAT_OUT_MNG IS NULL');
         return $builder->get()->getResultArray();

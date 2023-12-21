@@ -40,9 +40,9 @@
                     <option selected disabled>== SELECT ==</option>
                     <?php foreach ($materials as $d) : ?>
                       <?php if (@old('ip_code') == $d['MAT_CODE']) : ?>
-                        <option selected><?= $d['MAT_CODE']; ?></option>
+                        <option selected value="<?= $d['MAT_CODE']; ?>"><?= $d['MAT_CODE']; ?> - <?= $d['MAT_SAP_CODE']; ?></option>
                       <?php else : ?>
-                        <option><?= $d['MAT_CODE']; ?></option>
+                        <option value="<?= $d['MAT_CODE']; ?>"><?= $d['MAT_CODE']; ?> - <?= $d['MAT_SAP_CODE']; ?></option>
                       <?php endif; ?>
                     <?php endforeach; ?>
                   </select>
