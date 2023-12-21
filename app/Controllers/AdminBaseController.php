@@ -51,6 +51,7 @@ abstract class AdminBaseController extends Controller
   public $submenu = '';
   public $model;
   public $data = [];
+  public $settings;
 
   /**
    * Be sure to declare properties for any property fetch you initialized.

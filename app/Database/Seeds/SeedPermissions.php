@@ -236,6 +236,15 @@ class SeedPermissions extends Seeder
                 'title'    => 'Planned Inbound Import',
                 'code'    => 'planned_inbound_import',
             ],
+
+            [
+                'title'    => 'Laporan Chart Building',
+                'code'    => 'chart_building',
+            ],
+            [
+                'title'    => 'Laporan Table Building',
+                'code'    => 'table_building',
+            ],
         ];
 
         $this->db->table('permissions')->insertBatch($data);

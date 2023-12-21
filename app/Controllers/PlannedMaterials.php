@@ -13,6 +13,7 @@ class PlannedMaterials extends AdminBaseController
     public $link = 'planned_materials';
     private $view = 'admin/planned_materials';
     private $dir = '';
+    private $pcs;
 
     public function __construct()
     {

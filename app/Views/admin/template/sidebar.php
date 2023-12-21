@@ -204,6 +204,44 @@
           </li>
         <?php endif; ?>
 
+
+        <?php
+        $hasChartBuilding = hasPermissions('chart_building');
+        $hasTableBuilding = hasPermissions('table_building');
+        ?>
+        <?php if ($hasChartBuilding || $hasTableBuilding) : ?>
+          <li class="sidebar-item  has-sub <?= (@$_page->menu == 'laporan') ? 'active' : '' ?>">
+            <a href="#" class='sidebar-link'>
+              <i class="fas fa-cog"></i>
+              <span>Laporan</span>
+            </a>
+
+            <!-- submenu submenu-open -->
+            <!-- submenu submenu-closed -->
+            <ul class="submenu <?= ($_page->menu == 'laporan') ? 'submenu-open' : ''; ?>">
+
+              <?php if ($hasChartBuilding) : ?>
+
+                <li class="submenu-item  <?php echo (@$_page->submenu == 'chart_building') ? 'active' : '' ?>">
+                  <a href="<?= base_url('laporan/chart_building') ?>" class="submenu-link">Chart Building </a>
+
+                </li>
+
+              <?php endif; ?>
+
+              <?php if ($hasTableBuilding) : ?>
+                <li class="submenu-item  <?php echo (@$_page->submenu == 'table_building') ? 'active' : '' ?>">
+                  <a href="<?= base_url('laporan/table_building/all') ?>" class="submenu-link">Table Building </a>
+
+                </li>
+              <?php endif; ?>
+
+            </ul>
+
+
+          </li>
+        <?php endif; ?>
+
       </ul>
     </div>
   </div>

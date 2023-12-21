@@ -25,6 +25,10 @@
 <script src="<?= base_url(); ?>public/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 <script src="<?= base_url(); ?>public/assets/plugins/select2js/js/select2.min.js"></script>
+<script src="<?= base_url(); ?>public/assets/extensions/chart.js/chart3.js"></script>
+<script src="<?= base_url(); ?>public/assets/extensions/chart.js/chart.utils.js"></script>
+<script src="<?= base_url(); ?>public/assets/extensions/chart.js/chartjs-plugin-datalabels.min.js"></script>
+
 <script>
   // $.fn.select2.defaults.set("theme", "bootstrap");
   $("select.form-control").select2({

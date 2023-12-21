@@ -131,3 +131,9 @@ $routes->resource('planned_curing', ['controller' => '\App\Controllers\PlannedCu
 $routes->post('planned_inbound/import', '\App\Controllers\PlannedInbound::import');
 $routes->get('planned_inbound/ajax_ipcode', '\App\Controllers\PlannedInbound::ajaxIpCode');
 $routes->resource('planned_inbound', ['controller' => '\App\Controllers\PlannedInbound']);
+
+$routes->get('laporan/chart_building', '\App\Controllers\Laporan::index');
+$routes->get('laporan/frame_building/(:any)', '\App\Controllers\Laporan::frame_building/$1');
+$routes->get('laporan/table_building/(:any)', '\App\Controllers\Laporan::table_building/$1');
+
+$routes->get('laporan/ajax_chart_building', '\App\Controllers\Laporan::ajaxChartBuilding');
