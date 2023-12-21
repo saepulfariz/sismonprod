@@ -3,13 +3,7 @@
 
 
 <?= $this->section('head'); ?>
-
-<style>
-    body {
-        background: black;
-    }
-</style>
-
+<meta http-equiv="refresh" content="720">
 <?= $this->endSection('head'); ?>
 
 

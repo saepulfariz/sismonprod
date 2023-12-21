@@ -327,4 +327,148 @@ class PcsModel extends Model
 
         return $row;
     }
+
+
+    function getDataCuring($bulan = null, $tahun = null)
+    {
+        $date_first = $tahun . '-' . $bulan . '-01';
+        // $date_last = date('Y-m-d', strtotime('-1 Days', strtotime(date('Y-m-d'))));
+        if ($bulan < date('m') && $tahun <= date('Y')) {
+            // jika bulan yang di pilih lebih kecil dari bulan sekarang
+            // $date_last = $tahun . '-' . $bulan . $date;
+            $date_last = date("Y-m-t", strtotime("$tahun-$bulan-01"));
+        } else {
+            $date_last = $tahun . '-' . $bulan . date('-d');
+        }
+
+
+        $sql_group = "SELECT MD.MAT_CODE
+                        ,SUM(PS_QUANTITY) as PS_QUANTIY
+                    FROM [PCS].[dbo].[DC_PRODUCTION_DATA] as DC
+                LEFT JOIN MD_MATERIALS AS MD ON MD.MAT_SAP_CODE = DC.MAT_SAP_CODE
+                    LEFT JOIN MD_MACHINES as MDM ON MDM.MCH_CODE = DC.MCH_CODE
+                    WHERE DC.PP_CODE = 'V01' 
+                    --AND MD.MAT_CODE = '36272'
+                    AND CONVERT(date, PS_DATE) >= '" . $date_first . "'
+                    AND CONVERT(date, PS_DATE) <= '" . $date_last . "'   GROUP BY MD.MAT_CODE";
+        $data_act = $this->pcs->query($sql_group)->getResultArray();
+
+
+        $new_data = [];
+        $old_data = [];
+        $a = 0;
+        foreach ($data_act as $key => $value) {
+
+            $data_plan = $this->db->table('planned_curing')->select('ip_code, mch_type, SUM( CASE WHEN p_date = CONVERT(date, GETDATE()) THEN 
+                    ROUND( (qty * ROUND( CAST( (DATEPART(hour, GETDATE()) * 60 + DATEPART(minute, GETDATE()) ) as FLOAT) / 60 , 1) / 24), 0 )
+                ELSE qty
+            END ) as qty')->where('ip_code', $value['MAT_CODE'])->where('p_date >=', $date_first)->where('p_date <=', $date_last)->groupBy('ip_code, mch_type')->get()->getRowArray();
+
+            $plan = ($data_plan) ? $data_plan['qty'] : 0;
+            $mch = ($data_plan) ? $data_plan['mch_type'] : '';
+            $gap = $value['PS_QUANTIY'] - $plan;
+            $old_data[$a]['MAT_CODE'] = $value['MAT_CODE'];
+            $old_data[$a]['MCH_TYPE'] = $mch;
+            $old_data[$a]['ACT'] = $value['PS_QUANTIY'];
+            $old_data[$a]['PLAN'] = $plan;
+            // $new_data[$a]['MAT_CODE'] = $value['MAT_CODE'];
+            $new_data[$a]['GAP'] = $gap;
+            $a++;
+        }
+
+        // krsort($new_data);
+        arsort($new_data);
+        $data = [];
+        $a = 0;
+        $mru1 = 0;
+        $btum = 0;
+        $stum = 0;
+        $sbtu = 0;
+        foreach ($new_data as $key => $value) {
+
+            if ($old_data[$key]['MCH_TYPE'] == 'MRU1') {
+                $data['MRU1'][$mru1]['MAT_CODE'] = $old_data[$key]['MAT_CODE'];
+                $data['MRU1'][$mru1]['MCH_TYPE'] = $old_data[$key]['MCH_TYPE'];
+                $data['MRU1'][$mru1]['ACT'] = $old_data[$key]['ACT'];
+                $data['MRU1'][$mru1]['PLAN'] = $old_data[$key]['PLAN'];
+                $data['MRU1'][$mru1]['GAP'] = $value['GAP'];
+                $mru1++;
+            } else  if ($old_data[$key]['MCH_TYPE'] == 'BTUM') {
+                $data['BTUM'][$btum]['MAT_CODE'] = $old_data[$key]['MAT_CODE'];
+                $data['BTUM'][$btum]['MCH_TYPE'] = $old_data[$key]['MCH_TYPE'];
+                $data['BTUM'][$btum]['ACT'] = $old_data[$key]['ACT'];
+                $data['BTUM'][$btum]['PLAN'] = $old_data[$key]['PLAN'];
+                $data['BTUM'][$btum]['GAP'] = $value['GAP'];
+                $btum++;
+            } else  if ($old_data[$key]['MCH_TYPE'] == 'STUM') {
+                $data['STUM'][$stum]['MAT_CODE'] = $old_data[$key]['MAT_CODE'];
+                $data['STUM'][$stum]['MCH_TYPE'] = $old_data[$key]['MCH_TYPE'];
+                $data['STUM'][$stum]['ACT'] = $old_data[$key]['ACT'];
+                $data['STUM'][$stum]['PLAN'] = $old_data[$key]['PLAN'];
+                $data['STUM'][$stum]['GAP'] = $value['GAP'];
+                $stum++;
+            } else if ($old_data[$key]['MCH_TYPE'] == 'SBTU') {
+                $data['SBTU'][$sbtu]['MAT_CODE'] = $old_data[$key]['MAT_CODE'];
+                $data['SBTU'][$sbtu]['MCH_TYPE'] = $old_data[$key]['MCH_TYPE'];
+                $data['SBTU'][$sbtu]['ACT'] = $old_data[$key]['ACT'];
+                $data['SBTU'][$sbtu]['PLAN'] = $old_data[$key]['PLAN'];
+                $data['SBTU'][$sbtu]['GAP'] = $value['GAP'];
+                $sbtu++;
+            }
+
+            $a++;
+        }
+
+        return $data;
+    }
+
+    function getDataCuringDetail($ip, $bulan = null, $tahun = null)
+    {
+        $date_first = $tahun . '-' . $bulan . '-01';
+        // $date_last = date('Y-m-d', strtotime('-1 Days', strtotime(date('Y-m-d'))));
+        if ($bulan < date('m')) {
+            // jika bulan yang di pilih lebih kecil dari bulan sekarang
+            $date_last = date("Y-m-t", strtotime("$tahun-$bulan-01"));
+        } else {
+            $date_last = $tahun . '-' . $bulan . date('-d');
+        }
+        $range_date = getDatesFromRange($date_first, $date_last);
+        arsort($range_date);
+
+
+        $new_data = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $sql_group = "SELECT MD.MAT_CODE, CONVERT(date, PS_DATE) as PS_DATE
+                        ,SUM(PS_QUANTITY) as PS_QUANTIY
+                    FROM [PCS].[dbo].[DC_PRODUCTION_DATA] as DC
+                LEFT JOIN MD_MATERIALS AS MD ON MD.MAT_SAP_CODE = DC.MAT_SAP_CODE
+                    LEFT JOIN MD_MACHINES as MDM ON MDM.MCH_CODE = DC.MCH_CODE
+                    WHERE DC.PP_CODE = 'V01' 
+                    AND MD.MAT_CODE = '" . $ip . "'
+                    AND CONVERT(date, PS_DATE) = '" . $d . "'  GROUP BY MD.MAT_CODE, CONVERT(date, PS_DATE) ORDER BY PS_DATE DESC";
+            $data_act = $this->pcs->query($sql_group)->getRowArray();
+
+            $data_plan = $this->db->table('planned_curing')->select('ip_code, mch_type, status, CASE WHEN p_date = CONVERT(date, GETDATE()) THEN 
+                    ROUND( (qty * ROUND( CAST( (DATEPART(hour, GETDATE()) * 60 + DATEPART(minute, GETDATE()) ) as FLOAT) / 60 , 1) / 24), 0 )
+                ELSE qty
+            END as qty')->where('ip_code', $ip)->where('p_date', $d)->get()->getRowArray();
+
+
+            $plan = ($data_plan) ? $data_plan['qty'] : 0;
+            $PS_QUANTIY = ($data_act) ? $data_act['PS_QUANTIY'] : 0;
+            $mch = ($data_plan) ? $data_plan['mch_type'] : '';
+            $status = ($data_plan) ? $data_plan['status'] : '';
+            $gap = $PS_QUANTIY - $plan;
+            $new_data[$a]['MAT_CODE'] = $ip;
+            $new_data[$a]['PS_DATE'] = $d;
+            $new_data[$a]['MCH_TYPE'] = $mch;
+            $new_data[$a]['STATUS'] = $status;
+            $new_data[$a]['ACT'] = $PS_QUANTIY;
+            $new_data[$a]['PLAN'] = $plan;
+            $new_data[$a]['GAP'] = $gap;
+            $a++;
+        }
+        return $new_data;
+    }
 }

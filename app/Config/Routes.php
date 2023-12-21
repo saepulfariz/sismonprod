@@ -137,3 +137,9 @@ $routes->get('laporan/frame_building/(:any)', '\App\Controllers\Laporan::frame_b
 $routes->get('laporan/table_building/(:any)', '\App\Controllers\Laporan::table_building/$1');
 
 $routes->get('laporan/ajax_chart_building', '\App\Controllers\Laporan::ajaxChartBuilding');
+
+$routes->get('laporan/chart_curing', '\App\Controllers\Laporan::chart_curing');
+$routes->get('laporan/chart_curing/(:num)/(:num)', '\App\Controllers\Laporan::chart_curing/$1/$2');
+
+$routes->get('laporan/ajax_curingip', '\App\Controllers\Laporan::ajaxCuringIp');
+$routes->get('laporan/ajax_curingmachine', '\App\Controllers\Laporan::ajaxCuringMachine');

@@ -29,6 +29,10 @@
 <script src="<?= base_url(); ?>public/assets/extensions/chart.js/chart.utils.js"></script>
 <script src="<?= base_url(); ?>public/assets/extensions/chart.js/chartjs-plugin-datalabels.min.js"></script>
 
+
+<script src="<?= base_url(); ?>public/assets/blokui.js"></script>
+<script src="<?= base_url(); ?>public/assets/loader.js"></script>
+
 <script>
   // $.fn.select2.defaults.set("theme", "bootstrap");
   $("select.form-control").select2({
