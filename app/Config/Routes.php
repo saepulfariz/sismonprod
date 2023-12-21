@@ -123,3 +123,7 @@ $routes->resource('planned_materials', ['controller' => '\App\Controllers\Planne
 $routes->resource('departments', ['controller' => '\App\Controllers\Departments']);
 $routes->get('sections/ajax_sections', '\App\Controllers\Sections::ajaxSections');
 $routes->resource('sections', ['controller' => '\App\Controllers\Sections']);
+
+$routes->post('planned_curing/import', '\App\Controllers\PlannedCuring::import');
+$routes->get('planned_curing/ajax_ipcode', '\App\Controllers\PlannedCuring::ajaxIpCode');
+$routes->resource('planned_curing', ['controller' => '\App\Controllers\PlannedCuring']);

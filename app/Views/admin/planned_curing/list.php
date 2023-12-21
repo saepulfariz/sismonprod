@@ -40,12 +40,13 @@
           <thead>
             <tr>
               <td>No</td>
-              <td>Mat Sap Code</td>
-              <td>Ip Code</td>
-              <td>Mat Desc</td>
-              <td>Shift</td>
-              <td>Hour</td>
-              <td>Minute</td>
+              <td>Ip Seven</td>
+              <td>Brand</td>
+              <td>Mch Type</td>
+              <td>Date</td>
+              <td>Rim</td>
+              <td>Qty</td>
+              <td>Status</td>
               <td>Action</td>
             </tr>
           </thead>
@@ -55,12 +56,13 @@
             foreach ($data as $d) : ?>
               <tr>
                 <td><?= $a++; ?></td>
-                <td><?= $d['mat_sap_code']; ?></td>
-                <td><?= $d['ip_code']; ?></td>
-                <td><?= $d['mat_desc']; ?></td>
-                <td><?= $d['target_shift']; ?></td>
-                <td><?= $d['target_hour']; ?></td>
-                <td><?= $d['target_minute']; ?></td>
+                <td><?= $d['ip_seven']; ?></td>
+                <td><?= $d['brand']; ?></td>
+                <td><?= $d['mch_type']; ?></td>
+                <td><?= $d['p_date']; ?></td>
+                <td><?= $d['rim']; ?></td>
+                <td><?= $d['qty']; ?></td>
+                <td><?= $d['status']; ?></td>
                 <td>
                   <?php if ($hasEdit) : ?>
                     <a href="<?= base_url($_page->link . '/' . $d['id'] . '/edit'); ?>" class="btn btn-sm btn-outline-primary" title="Edit" data-toggle="tooltip"><i class="fas fa-edit"></i></a>
@@ -93,11 +95,15 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <a class="fw-bold" href="<?= base_url(); ?>public/example/planned_material.xlsx">Download Format Excel</a>
-          <p>
-            <span class="text-danger fw-bold">Warning!!</span>
-            Backup your data, because this replace data in upload
-          </p>
+          <p>Download format excel Upload <a href="<?= base_url('public/example/template_inbound_planner.xlsx'); ?>">Disini</a>, </p>
+          <div>
+            <ul>
+              <li>Aplikasi Akomodir <b>7 Hari</b> Planning</li>
+              <li>Tanggal sesuai dengan Format English <b>9-May</b></li>
+              <li>Kolom <b>BRAND, RIM, Dan MACHINE TYPE</b> required</li>
+              <li>Machine Type dengan format <span class="text-danger fw-bold">BTUM SBTU STUM MRU1</span></li>
+            </ul>
+          </div>
           <div class="mb-2">
             <label for="upload_file">Import Excel</label>
             <input type="file" name="upload_file" id="upload_file" class="form-control" required>

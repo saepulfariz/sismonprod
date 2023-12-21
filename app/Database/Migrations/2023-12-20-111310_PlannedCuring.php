@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class PlannedMaterials extends Migration
+class PlannedCuring extends Migration
 {
     public function up()
     {
@@ -15,29 +15,44 @@ class PlannedMaterials extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
+            'ip_seven' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '256',
+            ],
             'ip_code' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '256',
             ],
-            'mat_sap_code' => [
+            'cost_center' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '256',
             ],
-            'mat_desc' => [
+            'brand' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '256',
             ],
-            'target_shift' => [
+            'mch_type' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '256',
+            ],
+            'rim' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
             ],
-            'target_hour' => [
+            'p_date' => [
+                'type'           => 'DATE',
+            ],
+            'week' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
             ],
-            'target_minute' => [
+            'qty' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
+            ],
+            'status' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '256',
             ],
             'cid' => [
                 'type'           => 'INT',
@@ -61,13 +76,13 @@ class PlannedMaterials extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('cid', 'users', 'id', '', '', 'planned_materials_cid_users_id');
-        // $this->forge->addForeignKey('uid', 'users', 'id', '', '', 'planned_materials_uid_users_id');
-        $this->forge->createTable('planned_materials');
+        $this->forge->addForeignKey('cid', 'users', 'id', '', '', 'planned_curing_cid_users_id');
+        // $this->forge->addForeignKey('uid', 'users', 'id', '', '', 'planned_curing_uid_users_id');
+        $this->forge->createTable('planned_curing');
     }
 
     public function down()
     {
-        $this->forge->dropTable('planned_materials');
+        $this->forge->dropTable('planned_curing');
     }
 }

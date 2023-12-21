@@ -194,6 +194,27 @@ class SeedPermissions extends Seeder
                 'code'    => 'planned_materials_import',
             ],
 
+
+            [
+                'title'    => 'Planned Curing List',
+                'code'    => 'planned_curing_list',
+            ],
+            [
+                'title'    => 'Planned Curing Add',
+                'code'    => 'planned_curing_add',
+            ],
+            [
+                'title'    => 'Planned Curing Edit',
+                'code'    => 'planned_curing_edit',
+            ],
+            [
+                'title'    => 'Planned Curing Delete',
+                'code'    => 'planned_curing_delete',
+            ],
+            [
+                'title'    => 'Planned Curing Import',
+                'code'    => 'planned_curing_import',
+            ],
         ];
 
         $this->db->table('permissions')->insertBatch($data);
