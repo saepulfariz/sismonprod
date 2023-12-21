@@ -5,13 +5,13 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Controllers\AdminBaseController;
 
-class PlannedCuring extends AdminBaseController
+class PlannedInbound extends AdminBaseController
 {
 
-    public $title = 'Planned Curing';
-    public $menu = 'planned_curing';
-    public $link = 'planned_curing';
-    private $view = 'admin/planned_curing';
+    public $title = 'Planned Inbound';
+    public $menu = 'planned_inbound';
+    public $link = 'planned_inbound';
+    private $view = 'admin/planned_inbound';
     private $dir = '';
     private $mch_type = [
         'BTUM',
@@ -34,7 +34,7 @@ class PlannedCuring extends AdminBaseController
 
     public function __construct()
     {
-        $this->model = new \App\Models\PlannedCuringModel();
+        $this->model = new \App\Models\PlannedInboundModel();
 
         $brand = $this->model->select('brand')->groupBy('brand')->findAll();
         if (count($this->brand) != count($brand)) {
@@ -58,7 +58,7 @@ class PlannedCuring extends AdminBaseController
     public function index()
     {
 
-        $this->permissionCheck('planned_curing_list');
+        $this->permissionCheck('planned_inbound_list');
 
         $data = [
             'data' => $this->model->orderBy('id', 'DESC')->findAll()
@@ -88,7 +88,7 @@ class PlannedCuring extends AdminBaseController
     public function new()
     {
 
-        $this->permissionCheck('planned_curing_add');
+        $this->permissionCheck('planned_inbound_add');
         $data = [
             'ip_seven' => $this->model->select('ip_seven')->groupBy('ip_seven')->findAll(),
             'mch_type' => $this->mch_type,
@@ -103,7 +103,7 @@ class PlannedCuring extends AdminBaseController
 
     public function create()
     {
-        $this->permissionCheck('planned_curing_add');
+        $this->permissionCheck('planned_inbound_add');
 
         $rules = [
             'ip_code' => 'required',
@@ -157,7 +157,7 @@ class PlannedCuring extends AdminBaseController
     public function edit($id)
     {
 
-        $this->permissionCheck('planned_curing_edit');
+        $this->permissionCheck('planned_inbound_edit');
 
         $result = $this->model->find($id);
         if (!$result) {
@@ -181,7 +181,7 @@ class PlannedCuring extends AdminBaseController
     public function update($id)
     {
 
-        $this->permissionCheck('planned_curing_edit');
+        $this->permissionCheck('planned_inbound_edit');
 
         $result = $this->model->find($id);
         if (!$result) {
@@ -240,7 +240,7 @@ class PlannedCuring extends AdminBaseController
     public function delete($id)
     {
 
-        $this->permissionCheck('planned_curing_delete');
+        $this->permissionCheck('planned_inbound_delete');
 
         $result = $this->model->find($id);
         if (!$result) {
@@ -259,7 +259,7 @@ class PlannedCuring extends AdminBaseController
 
     public function import()
     {
-        $this->permissionCheck('planned_curing_import');
+        $this->permissionCheck('planned_inbound_import');
 
         $file_mimes = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         if (isset($_FILES['upload_file']['name']) && in_array($_FILES['upload_file']['type'], $file_mimes)) {
@@ -442,10 +442,10 @@ class PlannedCuring extends AdminBaseController
             $fileName = '';
             $name_original = $file->getName();
             if ($file->getError() != 4) {
-                $fileName = date('ymdhis') . '_curing_' . $name_original;
-                $file->move('public/uploads/curing', $fileName);
+                $fileName = date('ymdhis') . '_inbound_' . $name_original;
+                $file->move('public/uploads/inbound', $fileName);
             }
-            $notif = "Success Import, New Material : " . $countNew . " | Updated Planning :  " . $countUpdate;
+            $notif = "Success Import, New Planning : " . $countNew . " | Updated Planning :  " . $countUpdate;
             setAlert('success', 'Success', $notif);
 
             return redirect()->to($this->link);

@@ -127,3 +127,4 @@ _modules/*
 /.phpunit.*.cache
 
 public/uploads/curing/
+public/uploads/inbound/

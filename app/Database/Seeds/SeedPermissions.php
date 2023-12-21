@@ -215,6 +215,27 @@ class SeedPermissions extends Seeder
                 'title'    => 'Planned Curing Import',
                 'code'    => 'planned_curing_import',
             ],
+
+            [
+                'title'    => 'Planned Inbound List',
+                'code'    => 'planned_inbound_list',
+            ],
+            [
+                'title'    => 'Planned Inbound Add',
+                'code'    => 'planned_inbound_add',
+            ],
+            [
+                'title'    => 'Planned Inbound Edit',
+                'code'    => 'planned_inbound_edit',
+            ],
+            [
+                'title'    => 'Planned Inbound Delete',
+                'code'    => 'planned_inbound_delete',
+            ],
+            [
+                'title'    => 'Planned Inbound Import',
+                'code'    => 'planned_inbound_import',
+            ],
         ];
 
         $this->db->table('permissions')->insertBatch($data);

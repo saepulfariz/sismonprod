@@ -193,6 +193,17 @@
           </li>
         <?php endif; ?>
 
+        <?php if (hasPermissions('planned_inbound_list')) : ?>
+          <li class="sidebar-item  <?= (@$_page->menu == 'planned_inbound') ? 'active' : '' ?>">
+            <a href="<?= base_url('planned_inbound'); ?>" class='sidebar-link '>
+              <i class="bi bi-grid-fill"></i>
+              <span class="text-capitalize">
+                Planned Inbound
+              </span>
+            </a>
+          </li>
+        <?php endif; ?>
+
       </ul>
     </div>
   </div>

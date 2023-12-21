@@ -127,3 +127,7 @@ $routes->resource('sections', ['controller' => '\App\Controllers\Sections']);
 $routes->post('planned_curing/import', '\App\Controllers\PlannedCuring::import');
 $routes->get('planned_curing/ajax_ipcode', '\App\Controllers\PlannedCuring::ajaxIpCode');
 $routes->resource('planned_curing', ['controller' => '\App\Controllers\PlannedCuring']);
+
+$routes->post('planned_inbound/import', '\App\Controllers\PlannedInbound::import');
+$routes->get('planned_inbound/ajax_ipcode', '\App\Controllers\PlannedInbound::ajaxIpCode');
+$routes->resource('planned_inbound', ['controller' => '\App\Controllers\PlannedInbound']);
