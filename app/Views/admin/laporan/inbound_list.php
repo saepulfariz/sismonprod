@@ -63,7 +63,9 @@
                                 <button type="button" id="detail" class="btn btn-info">Detail</button>
                                 <button type="button" id="chart" class="btn btn-warning">Chart</button>
                                 <button type="button" id="rim" class="btn btn-secondary">RIM</button>
-                                <button type="button" id="export" class="btn btn-success">Export</button>
+                                <?php if (hasPermissions('inbound_list_export')) : ?>
+                                    <button type="button" id="export" class="btn btn-success">Export</button>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </form>
