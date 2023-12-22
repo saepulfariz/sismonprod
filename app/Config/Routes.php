@@ -147,3 +147,7 @@ $routes->get('laporan/ajax_curingmachine', '\App\Controllers\Laporan::ajaxCuring
 $routes->get('laporan/inbound', '\App\Controllers\Laporan::inbound');
 $routes->get('laporan/inbound_ajax', '\App\Controllers\Laporan::ajaxInbound');
 $routes->get('laporan/inbound_export', '\App\Controllers\Laporan::exportInbound');
+
+$routes->get('laporan/inbound_detail', '\App\Controllers\Laporan::inboundDetail');
+$routes->get('laporan/inbound_detail_ajax', '\App\Controllers\Laporan::ajaxInboundDetail');
+$routes->get('laporan/inbound_detail_export', '\App\Controllers\Laporan::exportInboundDetail');

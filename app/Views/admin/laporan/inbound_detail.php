@@ -57,15 +57,10 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-2 mb-2">
                                 <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
                                 <button type="button" id="submit" class="btn btn-primary">Submit</button>
-                                <?php if (hasPermissions('inbound_detail')) : ?>
-                                    <button type="button" id="detail" class="btn btn-info">Detail</button>
-                                <?php endif; ?>
-                                <button type="button" id="chart" class="btn btn-warning">Chart</button>
-                                <button type="button" id="rim" class="btn btn-secondary">RIM</button>
-                                <?php if (hasPermissions('inbound_list_export')) : ?>
+                                <?php if (hasPermissions('inbound_detail_export')) : ?>
                                     <button type="button" id="export" class="btn btn-success">Export</button>
                                 <?php endif; ?>
                             </div>
@@ -75,7 +70,7 @@
 
                     <div class="row mt-1">
                         <div class="col table-responsive" id="area_lod">
-                            <?= $this->include('admin/laporan/inbound_list_ajax'); ?>
+                            <?= $this->include('admin/laporan/inbound_detail_ajax'); ?>
                         </div>
                     </div>
                 </div>
@@ -108,26 +103,8 @@
 <script>
     $('#export').on('click', function() {
         var bulan = $('#bulan').val();
-        var link = '<?= base_url(); ?>laporan/inbound_export?bulan=' + bulan;
-        window.open(link, '_blank');
-    })
-
-    $('#chart').on('click', function() {
-        var bulan = $('#bulan').val();
-        var link = '<?= base_url(); ?>laporan/inbound_chart?bulan=' + bulan;
-        window.open(link, '_blank');
-    })
-
-    $('#detail').on('click', function() {
-        var bulan = $('#bulan').val();
-        var link = '<?= base_url(); ?>laporan/inbound_detail?bulan=' + bulan;
-        window.open(link, '_blank');
-    })
-
-
-    $('#rim').on('click', function() {
-        var bulan = $('#bulan').val();
-        var link = '<?= base_url(); ?>laporan/inbound_rim?bulan=' + bulan;
+        var link = '<?= base_url(); ?>laporan/inbound_detail_export?bulan=' + bulan;
+        // console.log(link);
         window.open(link, '_blank');
     })
 
@@ -140,7 +117,7 @@
         loading('area_lod');
 
         $.ajax({
-            url: '<?= base_url(); ?>laporan/inbound_ajax',
+            url: '<?= base_url(); ?>laporan/inbound_detail_ajax',
             method: 'GET', // POST
             data: {
                 bulan: bulan,

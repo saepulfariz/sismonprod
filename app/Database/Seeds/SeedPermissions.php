@@ -264,6 +264,16 @@ class SeedPermissions extends Seeder
                 'title'    => 'Laporan Inbound List Export',
                 'code'    => 'inbound_list_export',
             ],
+
+
+            [
+                'title'    => 'Laporan Inbound Detail',
+                'code'    => 'inbound_detail',
+            ],
+            [
+                'title'    => 'Laporan Inbound Detail Export',
+                'code'    => 'inbound_detail_export',
+            ],
         ];
 
         $this->db->table('permissions')->insertBatch($data);

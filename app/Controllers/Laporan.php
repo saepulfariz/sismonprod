@@ -708,4 +708,748 @@ class Laporan extends AdminBaseController
 
         exit;
     }
+
+
+
+    public function inboundDetail()
+    {
+        $this->permissionCheck('inbound_detail');
+
+        $this->updatePageData([
+            'title' => 'Laporan Inbound Detail',
+            'submenu' => 'inbound_list',
+        ]);
+
+        $bulan = ($this->request->getVar('bulan')) ? $this->request->getVar('bulan') : intval(date('m'));
+        $tahun = ($this->request->getVar('tahun')) ? $this->request->getVar('tahun') : intval(date('Y'));
+
+        $date1 = $tahun . '-' . $bulan . '-' . '01';
+        // 👇 get the timestamp of the date
+        $date = strtotime($date1);
+        // $date = strtotime("2nd January 2022");
+
+        // 👇 get the last date for that month
+        $last_date = date("Y-m-t", $date);
+
+        // print $last_date; // 2022-01-31
+
+        $range_date = getDatesFromRange($date1, $last_date);
+        $data_end_range = end($range_date);
+
+        if ($last_date != $data_end_range) {
+            $range_date[] = $last_date;
+        }
+        // dd($range_date);
+        $data = [
+            'title' => 'Dashboard Detail',
+            'tahun' => $tahun,
+            'range_date' => $range_date,
+            'id_bulan' => $bulan,
+            'bulan' => date('F', strtotime(date('Y-' . $bulan . '-d')))
+        ];
+
+        return view($this->view . '/inbound_detail', $data);
+    }
+
+    public function ajaxInboundDetail()
+    {
+        $this->permissionCheck('inbound_detail');
+        $bulan = ($this->request->getVar('bulan')) ? $this->request->getVar('bulan') : intval(date('m'));
+        $tahun = ($this->request->getVar('tahun')) ? $this->request->getVar('tahun') : intval(date('Y'));
+
+        $date1 = $tahun . '-' . $bulan . '-' . '01';
+        // 👇 get the timestamp of the date
+        $date = strtotime($date1);
+        // $date = strtotime("2nd January 2022");
+
+        // 👇 get the last date for that month
+        $last_date = date("Y-m-t", $date);
+
+        // print $last_date; // 2022-01-31
+
+        $range_date = getDatesFromRange($date1, $last_date);
+        $data_end_range = end($range_date);
+
+        if ($last_date != $data_end_range) {
+            $range_date[] = $last_date;
+        }
+        // dd($range_date);
+        $data = [
+            'title' => 'Dashboard Detail',
+            'tahun' => $tahun,
+            'range_date' => $range_date,
+            'id_bulan' => $bulan,
+            'bulan' => date('F', strtotime(date('Y-' . $bulan . '-d')))
+        ];
+
+        return view($this->view . '/inbound_detail_ajax', $data);
+    }
+
+    public function exportInboundDetail()
+    {
+        $this->permissionCheck('inbound_detail_export');
+        $bulan = ($this->request->getVar('bulan')) ? $this->request->getVar('bulan') : intval(date('m'));
+        $tahun = ($this->request->getVar('tahun')) ? $this->request->getVar('tahun') : intval(date('Y'));
+
+        $date1 = $tahun . '-' . $bulan . '-' . '01';
+        // 👇 get the timestamp of the date
+        $date = strtotime($date1);
+        // $date = strtotime("2nd January 2022");
+
+        // 👇 get the last date for that month
+        $last_date = date("Y-m-t", $date);
+
+        // print $last_date; // 2022-01-31
+
+        $range_date = getDatesFromRange($date1, $last_date);
+        $data_end_range = end($range_date);
+
+        if ($last_date != $data_end_range) {
+            $range_date[] = $last_date;
+        }
+        // dd($range_date);
+        $data = [
+            'title' => 'Dashboard Detail',
+            'range_date' => $range_date,
+            'id_bulan' => $bulan,
+            'bulan' => date('F', strtotime(date('Y-' . $bulan . '-d')))
+        ];
+
+        // phpoffice/phpspreadsheet
+        $spreadsheet = new Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setTitle("DETAIL - " . $data['bulan'] . ' ' . $tahun);
+
+        $rowLabel = 1;
+
+        $lineFreeze = 2;
+
+        // $sheet->freezePane('A' . $lineFreeze);
+        // // Freeze second line:
+        // $sheet->freezePane('E' . $lineFreeze);
+
+        // set bold
+        $sheet->getStyle('A' . $rowLabel . ':N' . $rowLabel . '')->getFont()->setBold(true);
+
+        // set wrap text
+        $sheet->getStyle('A' . $rowLabel . ':N' . $rowLabel . '')->getAlignment()->setWrapText(true);
+
+        //  biar gak dempet karena autosize
+
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setAutoSize(true);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
+        $sheet->getColumnDimension('G')->setAutoSize(true);
+        $sheet->getColumnDimension('H')->setAutoSize(true);
+        $sheet->getColumnDimension('I')->setAutoSize(true);
+        $sheet->getColumnDimension('J')->setAutoSize(true);
+        $sheet->getColumnDimension('K')->setAutoSize(true);
+        $sheet->getColumnDimension('L')->setAutoSize(true);
+        $sheet->getColumnDimension('M')->setAutoSize(true);
+        $sheet->getColumnDimension('N')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->mergeCells("A1:B2");
+
+
+        $sheet->setCellValue('A' . $rowLabel, 'SUBANG');
+        $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setVertical('center');
+        $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal('center');
+        $sheet->setCellValue('C' . $rowLabel, $data['bulan'] . ' ' . $tahun);
+        $spreadsheet->getActiveSheet()->getStyle('C1')->getAlignment()->setHorizontal('center');
+        $rowWeek = $rowLabel + 1;
+
+        $abjad = [
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+            'J',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z',
+            'AA',
+            'AB',
+            'AC',
+            'AD',
+            'AE',
+            'AF',
+            'AG',
+            'AH',
+            'AI',
+            'AJ',
+            'AK',
+            'AL',
+            'AM',
+            'AN',
+            'AO',
+            'AP',
+            'AQ',
+            'AR',
+            'AS',
+            'AT',
+            'AU',
+            'AV',
+            'AW',
+            'AX',
+            'AY',
+            'AZ',
+        ];
+        $startDate = 'C';
+
+
+
+
+        // CREATE DATE
+        $in = 2;
+        $abjadStart = $abjad[$in];
+        foreach ($range_date as $d) {
+            $sheet->setCellValue($abjad[$in] . $rowWeek, date('d', strtotime($d)));
+            $abjadEnd = $abjad[$in];
+            $in++;
+        }
+
+        $spreadsheet->getActiveSheet()->mergeCells($abjadStart . "1:" . $abjad[$in] . "1");
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, 'ACT');
+
+
+        // total
+        $spreadsheet->getActiveSheet()->mergeCells("A3:A5");
+        $spreadsheet->getActiveSheet()->getStyle('A3')->getAlignment()->setVertical('center');
+        $sheet->setCellValue('A3', 'TOTAL');
+        $sheet->setCellValue('B3', 'Plan');
+
+        $in = 2;
+        $rowWeek = 3;
+        $abjadStart = $abjad[$in];
+        $plan = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d)['INBOUND'];
+            $plan[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($plan));
+
+
+        $sheet->setCellValue('B4', 'ACT');
+
+        $in = 2;
+        $rowWeek = 4;
+        $abjadStart = $abjad[$in];
+        $actual = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d)['INBOUND'];
+            $actual[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($actual));
+
+
+        $sheet->setCellValue('B5', '%');
+
+        $in = 2;
+        $rowWeek = 5;
+        $abjadStart = $abjad[$in];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = ($plan[$a] == 0 || $actual[$a] == 0) ? '' : round(($actual[$a] / $plan[$a] * 100), 1);
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, (array_sum($plan) == 0 || array_sum($actual) == 0) ? '' : round(array_sum($actual) / array_sum($plan) * 100, 1));
+
+
+        // PIRELLI
+        $spreadsheet->getActiveSheet()->mergeCells("A6:A8");
+        $spreadsheet->getActiveSheet()->getStyle('A6')->getAlignment()->setVertical('center');
+        $sheet->setCellValue('A6', 'PIRELLI');
+        $sheet->setCellValue('B6', 'Plan');
+
+        $in = 2;
+        $rowWeek = 6;
+        $abjadStart = $abjad[$in];
+        $plan = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "PIRELLI")['INBOUND'];
+            $plan[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($plan));
+
+
+        $sheet->setCellValue('B7', 'ACT');
+
+        $in = 2;
+        $rowWeek = 7;
+        $abjadStart = $abjad[$in];
+        $actual = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "PIRELLI")['INBOUND'];
+            $actual[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($actual));
+
+
+        $sheet->setCellValue('B8', '%');
+
+        $in = 2;
+        $rowWeek = 8;
+        $abjadStart = $abjad[$in];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = ($plan[$a] == 0 || $actual[$a] == 0) ? '' : round(($actual[$a] / $plan[$a] * 100), 1);
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, (array_sum($plan) == 0 || array_sum($actual) == 0) ? '' : round(array_sum($actual) / array_sum($plan) * 100, 1));
+
+
+        // ASPIRA
+        $spreadsheet->getActiveSheet()->mergeCells("A9:A11");
+        $spreadsheet->getActiveSheet()->getStyle('A9')->getAlignment()->setVertical('center');
+        $sheet->setCellValue('A9', 'ASPIRA');
+        $sheet->setCellValue('B9', 'Plan');
+
+        $in = 2;
+        $rowWeek = 9;
+        $abjadStart = $abjad[$in];
+        $plan = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "ASPIRA")['INBOUND'];
+            $plan[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($plan));
+
+
+        $sheet->setCellValue('B10', 'ACT');
+
+        $in = 2;
+        $rowWeek = 10;
+        $abjadStart = $abjad[$in];
+        $actual = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "ASPIRA")['INBOUND'];
+            $actual[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($actual));
+
+
+        $sheet->setCellValue('B11', '%');
+
+        $in = 2;
+        $rowWeek = 11;
+        $abjadStart = $abjad[$in];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = ($plan[$a] == 0 || $actual[$a] == 0) ? '' : round(($actual[$a] / $plan[$a] * 100), 1);
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, (array_sum($plan) == 0 || array_sum($actual) == 0) ? '' : round(array_sum($actual) / array_sum($plan) * 100, 1));
+
+
+        // OE
+        $spreadsheet->getActiveSheet()->mergeCells("A12:A14");
+        $spreadsheet->getActiveSheet()->getStyle('A12')->getAlignment()->setVertical('center');
+        $sheet->setCellValue('A12', 'OE');
+        $sheet->setCellValue('B12', 'Plan');
+
+        $in = 2;
+        $rowWeek = 12;
+        $abjadStart = $abjad[$in];
+        $plan = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '10')['INBOUND'];
+            $plan[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($plan));
+
+
+        $sheet->setCellValue('B13', 'ACT');
+
+        $in = 2;
+        $rowWeek = 13;
+        $abjadStart = $abjad[$in];
+        $actual = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '10')['INBOUND'];
+            $actual[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($actual));
+
+
+        $sheet->setCellValue('B14', '%');
+
+        $in = 2;
+        $rowWeek = 14;
+        $abjadStart = $abjad[$in];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = ($plan[$a] == 0 || $actual[$a] == 0) ? '' : round(($actual[$a] / $plan[$a] * 100), 1);
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, (array_sum($plan) == 0 || array_sum($actual) == 0) ? '' : round(array_sum($actual) / array_sum($plan) * 100, 1));
+
+
+        // RPLC
+        $spreadsheet->getActiveSheet()->mergeCells("A15:A17");
+        $spreadsheet->getActiveSheet()->getStyle('A15')->getAlignment()->setVertical('center');
+        $sheet->setCellValue('A15', 'RPLC');
+        $sheet->setCellValue('B15', 'Plan');
+
+        $in = 2;
+        $rowWeek = 15;
+        $abjadStart = $abjad[$in];
+        $plan = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '00')['INBOUND'];
+            $plan[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($plan));
+
+
+        $sheet->setCellValue('B16', 'ACT');
+
+        $in = 2;
+        $rowWeek = 16;
+        $abjadStart = $abjad[$in];
+        $actual = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '00')['INBOUND'];
+            $actual[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($actual));
+
+
+        $sheet->setCellValue('B17', '%');
+
+        $in = 2;
+        $rowWeek = 17;
+        $abjadStart = $abjad[$in];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = ($plan[$a] == 0 || $actual[$a] == 0) ? '' : round(($actual[$a] / $plan[$a] * 100), 1);
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, (array_sum($plan) == 0 || array_sum($actual) == 0) ? '' : round(array_sum($actual) / array_sum($plan) * 100, 1));
+
+
+        // BTU
+        $spreadsheet->getActiveSheet()->mergeCells("A18:A20");
+        $spreadsheet->getActiveSheet()->getStyle('A18')->getAlignment()->setVertical('center');
+        $sheet->setCellValue('A18', 'BTU');
+        $sheet->setCellValue('B18', 'Plan');
+
+        $in = 2;
+        $rowWeek = 18;
+        $abjadStart = $abjad[$in];
+        $plan = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'BTU')['INBOUND'];
+            $plan[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($plan));
+
+
+        $sheet->setCellValue('B19', 'ACT');
+
+        $in = 2;
+        $rowWeek = 19;
+        $abjadStart = $abjad[$in];
+        $actual = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'BTU')['INBOUND'];
+            $actual[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($actual));
+
+
+        $sheet->setCellValue('B20', '%');
+
+        $in = 2;
+        $rowWeek = 20;
+        $abjadStart = $abjad[$in];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = ($plan[$a] == 0 || $actual[$a] == 0) ? '' : round(($actual[$a] / $plan[$a] * 100), 1);
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, (array_sum($plan) == 0 || array_sum($actual) == 0) ? '' : round(array_sum($actual) / array_sum($plan) * 100, 1));
+
+
+        // STU
+        $spreadsheet->getActiveSheet()->mergeCells("A21:A23");
+        $spreadsheet->getActiveSheet()->getStyle('A21')->getAlignment()->setVertical('center');
+        $sheet->setCellValue('A21', 'STU');
+        $sheet->setCellValue('B21', 'Plan');
+
+        $in = 2;
+        $rowWeek = 21;
+        $abjadStart = $abjad[$in];
+        $plan = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'STU')['INBOUND'];
+            $plan[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($plan));
+
+
+        $sheet->setCellValue('B22', 'ACT');
+
+        $in = 2;
+        $rowWeek = 22;
+        $abjadStart = $abjad[$in];
+        $actual = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'STU')['INBOUND'];
+            $actual[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($actual));
+
+
+        $sheet->setCellValue('B23', '%');
+
+        $in = 2;
+        $rowWeek = 23;
+        $abjadStart = $abjad[$in];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = ($plan[$a] == 0 || $actual[$a] == 0) ? '' : round(($actual[$a] / $plan[$a] * 100), 1);
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, (array_sum($plan) == 0 || array_sum($actual) == 0) ? '' : round(array_sum($actual) / array_sum($plan) * 100, 1));
+
+
+        // MRU
+        $spreadsheet->getActiveSheet()->mergeCells("A24:A26");
+        $spreadsheet->getActiveSheet()->getStyle('A24')->getAlignment()->setVertical('center');
+        $sheet->setCellValue('A24', 'MRU');
+        $sheet->setCellValue('B24', 'Plan');
+
+        $in = 2;
+        $rowWeek = 24;
+        $abjadStart = $abjad[$in];
+        $plan = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'MRU')['INBOUND'];
+            $plan[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($plan));
+
+
+        $sheet->setCellValue('B25', 'ACT');
+
+        $in = 2;
+        $rowWeek = 25;
+        $abjadStart = $abjad[$in];
+        $actual = [];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'MRU')['INBOUND'];
+            $actual[$a] = (is_null($res)) ? 0 : $res;
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($actual));
+
+
+        $sheet->setCellValue('B26', '%');
+
+        $in = 2;
+        $rowWeek = 26;
+        $abjadStart = $abjad[$in];
+        $a = 0;
+        foreach ($range_date as $d) {
+            $res = ($plan[$a] == 0 || $actual[$a] == 0) ? '' : round(($actual[$a] / $plan[$a] * 100), 1);
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+            $abjadEnd = $abjad[$in];
+            $a++;
+            $in++;
+        }
+
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, (array_sum($plan) == 0 || array_sum($actual) == 0) ? '' : round(array_sum($actual) / array_sum($plan) * 100, 1));
+
+
+
+
+
+        $file_name = 'Performance SUBANG Detail - ' . $data['bulan'] . ' ' . $tahun . '.xlsx';
+
+
+        $writer = new Xlsx($spreadsheet);
+
+        $writer->save($file_name);
+
+        header("Content-Type: application/vnd.ms-excel");
+
+        header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
+
+        header('Expires: 0');
+
+        header('Cache-Control: must-revalidate');
+
+        header('Pragma: public');
+
+        header('Content-Length:' . filesize($file_name));
+
+        flush();
+
+        readfile($file_name);
+        @unlink($file_name);
+
+        exit;
+    }
 }
