@@ -472,7 +472,7 @@ class PcsModel extends Model
         return $new_data;
     }
 
-    public function getReport($tahun = null, $bulan = 1, $week = 0, $brand = null, $rim = null,  $cost_center = null, $mch_type = null, $date = null, $get = null)
+    public function getDataInbound($tahun = null, $bulan = 1, $week = 0, $brand = null, $rim = null,  $cost_center = null, $mch_type = null, $date = null, $get = null)
     {
 
         $tahun = ($tahun == null) ? date('Y') : $tahun;

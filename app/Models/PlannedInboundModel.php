@@ -52,7 +52,7 @@ class PlannedInboundModel extends BaseModel
 
     public $logId = true;
 
-    public function getReport($tahun = null, $bulan = 1, $week = 0, $brand = null, $rim = null, $cost_center = null, $mch_type = null, $date = null, $get = null)
+    public function getDataInbound($tahun = null, $bulan = 1, $week = 0, $brand = null, $rim = null, $cost_center = null, $mch_type = null, $date = null, $get = null)
     {
         $tahun = ($tahun == null) ? date('Y') : $tahun;
         $builder = $this->db->table($this->table);

@@ -179,7 +179,7 @@ class Laporan extends AdminBaseController
         return json_encode($data);
     }
 
-    private function dataWeekly()
+    private function inboundWeekly()
     {
         $bulan = ($this->request->getVar('bulan')) ? $this->request->getVar('bulan') : intval(date('m'));
         $tahun = ($this->request->getVar('tahun')) ? $this->request->getVar('tahun') : intval(date('Y'));
@@ -195,123 +195,123 @@ class Laporan extends AdminBaseController
             'title' => 'Report',
             'tahun' => $tahun,
             // 'rim_list' => $this->pcs->getRimList($tahun, $bulan, 0),
-            'total_week1' => $this->pcs->getReport($tahun, $bulan, $week1),
-            'total_week2' => $this->pcs->getReport($tahun, $bulan, $week2),
-            'total_week3' => $this->pcs->getReport($tahun, $bulan, $week3),
-            'total_week4' => $this->pcs->getReport($tahun, $bulan, $week4),
-            'total_week5' => $this->pcs->getReport($tahun, $bulan, $week5),
+            'total_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1),
+            'total_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2),
+            'total_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3),
+            'total_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4),
+            'total_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5),
 
-            'plan_total_week1' => $this->modelinbound->getReport($tahun, $bulan, $week1),
-            'plan_total_week2' => $this->modelinbound->getReport($tahun, $bulan, $week2),
-            'plan_total_week3' => $this->modelinbound->getReport($tahun, $bulan, $week3),
-            'plan_total_week4' => $this->modelinbound->getReport($tahun, $bulan, $week4),
-            'plan_total_week5' => $this->modelinbound->getReport($tahun, $bulan, $week5),
-
-
-            'total_act' => $this->pcs->getReport($tahun, $bulan, 0, null, null, null, null, null, 'week'),
-            'plan_total_act' => $this->modelinbound->getReport($tahun, $bulan, 0, null, null, null, null, null, 'week'),
-
-            'pirelli_week1' => $this->pcs->getReport($tahun, $bulan, $week1, 'PIRELLi'),
-            'pirelli_week2' => $this->pcs->getReport($tahun, $bulan, $week2, 'PIRELLi'),
-            'pirelli_week3' => $this->pcs->getReport($tahun, $bulan, $week3, 'PIRELLi'),
-            'pirelli_week4' => $this->pcs->getReport($tahun, $bulan, $week4, 'PIRELLi'),
-            'pirelli_week5' => $this->pcs->getReport($tahun, $bulan, $week5, 'PIRELLi'),
-
-            'plan_pirelli_week1' => $this->modelinbound->getReport($tahun, $bulan, $week1, 'PIRELLi'),
-            'plan_pirelli_week2' => $this->modelinbound->getReport($tahun, $bulan, $week2, 'PIRELLi'),
-            'plan_pirelli_week3' => $this->modelinbound->getReport($tahun, $bulan, $week3, 'PIRELLi'),
-            'plan_pirelli_week4' => $this->modelinbound->getReport($tahun, $bulan, $week4, 'PIRELLi'),
-            'plan_pirelli_week5' => $this->modelinbound->getReport($tahun, $bulan, $week5, 'PIRELLi'),
-
-            'plan_pirelli_act' => $this->modelinbound->getReport($tahun, $bulan, 0, 'PIRELLi',  null, null, null, null, 'week'),
-
-            'pirelli_act' => $this->pcs->getReport($tahun, $bulan, 0, 'PIRELLi',  null, null, null, null, 'week'),
-            'aspira_week1' => $this->pcs->getReport($tahun, $bulan, $week1, 'aspira'),
-            'aspira_week2' => $this->pcs->getReport($tahun, $bulan, $week2, 'aspira'),
-            'aspira_week3' => $this->pcs->getReport($tahun, $bulan, $week3, 'aspira'),
-            'aspira_week4' => $this->pcs->getReport($tahun, $bulan, $week4, 'aspira'),
-            'aspira_week5' => $this->pcs->getReport($tahun, $bulan, $week5, 'aspira'),
-            'aspira_act' => $this->pcs->getReport($tahun, $bulan, 0, 'aspira',  null, null, null, null, 'week'),
-
-            'plan_aspira_week1' => $this->modelinbound->getReport($tahun, $bulan, $week1, 'aspira'),
-            'plan_aspira_week2' => $this->modelinbound->getReport($tahun, $bulan, $week2, 'aspira'),
-            'plan_aspira_week3' => $this->modelinbound->getReport($tahun, $bulan, $week3, 'aspira'),
-            'plan_aspira_week4' => $this->modelinbound->getReport($tahun, $bulan, $week4, 'aspira'),
-            'plan_aspira_week5' => $this->modelinbound->getReport($tahun, $bulan, $week5, 'aspira'),
-            'plan_aspira_act' => $this->modelinbound->getReport($tahun, $bulan, 0, 'aspira',  null, null, null, null, 'week'),
-
-            'plan_oe_week1' => $this->modelinbound->getReport($tahun, $bulan, $week1, null, null, '10'),
-            'plan_oe_week2' => $this->modelinbound->getReport($tahun, $bulan, $week2, null, null, '10'),
-            'plan_oe_week3' => $this->modelinbound->getReport($tahun, $bulan, $week3, null, null, '10'),
-            'plan_oe_week4' => $this->modelinbound->getReport($tahun, $bulan, $week4, null, null, '10'),
-            'plan_oe_week5' => $this->modelinbound->getReport($tahun, $bulan, $week5, null, null, '10'),
-            'plan_oe_act' => $this->modelinbound->getReport($tahun, $bulan, 0, null, null, '10', null, null, 'week'),
-
-            'oe_week1' => $this->pcs->getReport($tahun, $bulan, $week1, null, null, '10'),
-            'oe_week2' => $this->pcs->getReport($tahun, $bulan, $week2, null, null, '10'),
-            'oe_week3' => $this->pcs->getReport($tahun, $bulan, $week3, null, null, '10'),
-            'oe_week4' => $this->pcs->getReport($tahun, $bulan, $week4, null, null, '10'),
-            'oe_week5' => $this->pcs->getReport($tahun, $bulan, $week5, null, null, '10'),
-            'oe_act' => $this->pcs->getReport($tahun, $bulan, 0, null, null, '10', null, null, 'week'),
+            'plan_total_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1),
+            'plan_total_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2),
+            'plan_total_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3),
+            'plan_total_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4),
+            'plan_total_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5),
 
 
-            'plan_rem_week1' => $this->modelinbound->getReport($tahun, $bulan, $week1, null, null, '00'),
-            'plan_rem_week2' => $this->modelinbound->getReport($tahun, $bulan, $week2, null, null, '00'),
-            'plan_rem_week3' => $this->modelinbound->getReport($tahun, $bulan, $week3, null, null, '00'),
-            'plan_rem_week4' => $this->modelinbound->getReport($tahun, $bulan, $week4, null, null, '00'),
-            'plan_rem_week5' => $this->modelinbound->getReport($tahun, $bulan, $week5, null, null, '00'),
-            'plan_rem_act' => $this->modelinbound->getReport($tahun, $bulan, 0, null, null, '00', null, null, 'week'),
+            'total_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, null, null, 'week'),
+            'plan_total_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, null, null, 'week'),
 
-            'rem_week1' => $this->pcs->getReport($tahun, $bulan, $week1, null, null, '00'),
-            'rem_week2' => $this->pcs->getReport($tahun, $bulan, $week2, null, null, '00'),
-            'rem_week3' => $this->pcs->getReport($tahun, $bulan, $week3, null, null, '00'),
-            'rem_week4' => $this->pcs->getReport($tahun, $bulan, $week4, null, null, '00'),
-            'rem_week5' => $this->pcs->getReport($tahun, $bulan, $week5, null, null, '00'),
-            'rem_act' => $this->pcs->getReport($tahun, $bulan, 0, null, null, '00', null, null, 'week'),
+            'pirelli_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, 'PIRELLi'),
+            'pirelli_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, 'PIRELLi'),
+            'pirelli_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, 'PIRELLi'),
+            'pirelli_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, 'PIRELLi'),
+            'pirelli_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, 'PIRELLi'),
 
-            'plan_btu_week1' => $this->modelinbound->getReport($tahun, $bulan, $week1, null, null, null, 'BTU'),
-            'plan_btu_week2' => $this->modelinbound->getReport($tahun, $bulan, $week2, null, null, null, 'BTU'),
-            'plan_btu_week3' => $this->modelinbound->getReport($tahun, $bulan, $week3, null, null, null, 'BTU'),
-            'plan_btu_week4' => $this->modelinbound->getReport($tahun, $bulan, $week4, null, null, null, 'BTU'),
-            'plan_btu_week5' => $this->modelinbound->getReport($tahun, $bulan, $week5, null, null, null, 'BTU'),
-            'plan_btu_act' => $this->modelinbound->getReport($tahun, $bulan, 0, null, null, null, 'BTU', null, 'week'),
+            'plan_pirelli_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, 'PIRELLi'),
+            'plan_pirelli_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, 'PIRELLi'),
+            'plan_pirelli_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, 'PIRELLi'),
+            'plan_pirelli_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, 'PIRELLi'),
+            'plan_pirelli_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, 'PIRELLi'),
 
-            'btu_week1' => $this->pcs->getReport($tahun, $bulan, $week1, null, null, null, 'BTU'),
-            'btu_week2' => $this->pcs->getReport($tahun, $bulan, $week2, null, null, null, 'BTU'),
-            'btu_week3' => $this->pcs->getReport($tahun, $bulan, $week3, null, null, null, 'BTU'),
-            'btu_week4' => $this->pcs->getReport($tahun, $bulan, $week4, null, null, null, 'BTU'),
-            'btu_week5' => $this->pcs->getReport($tahun, $bulan, $week5, null, null, null, 'BTU'),
-            'btu_act' => $this->pcs->getReport($tahun, $bulan, 0, null, null, null, 'BTU', null, 'week'),
+            'plan_pirelli_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, 'PIRELLi',  null, null, null, null, 'week'),
+
+            'pirelli_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, 'PIRELLi',  null, null, null, null, 'week'),
+            'aspira_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, 'aspira'),
+            'aspira_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, 'aspira'),
+            'aspira_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, 'aspira'),
+            'aspira_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, 'aspira'),
+            'aspira_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, 'aspira'),
+            'aspira_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, 'aspira',  null, null, null, null, 'week'),
+
+            'plan_aspira_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, 'aspira'),
+            'plan_aspira_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, 'aspira'),
+            'plan_aspira_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, 'aspira'),
+            'plan_aspira_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, 'aspira'),
+            'plan_aspira_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, 'aspira'),
+            'plan_aspira_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, 'aspira',  null, null, null, null, 'week'),
+
+            'plan_oe_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, null, null, '10'),
+            'plan_oe_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, null, null, '10'),
+            'plan_oe_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, null, null, '10'),
+            'plan_oe_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, null, null, '10'),
+            'plan_oe_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, null, null, '10'),
+            'plan_oe_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, '10', null, null, 'week'),
+
+            'oe_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, null, null, '10'),
+            'oe_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, null, null, '10'),
+            'oe_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, null, null, '10'),
+            'oe_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, null, null, '10'),
+            'oe_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, null, null, '10'),
+            'oe_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, '10', null, null, 'week'),
 
 
-            'plan_stu_week1' => $this->modelinbound->getReport($tahun, $bulan, $week1, null, null, null, 'stu'),
-            'plan_stu_week2' => $this->modelinbound->getReport($tahun, $bulan, $week2, null, null, null, 'stu'),
-            'plan_stu_week3' => $this->modelinbound->getReport($tahun, $bulan, $week3, null, null, null, 'stu'),
-            'plan_stu_week4' => $this->modelinbound->getReport($tahun, $bulan, $week4, null, null, null, 'stu'),
-            'plan_stu_week5' => $this->modelinbound->getReport($tahun, $bulan, $week5, null, null, null, 'stu'),
-            'plan_stu_act' => $this->modelinbound->getReport($tahun, $bulan, 0, null, null, null, 'stu', null, 'week'),
+            'plan_rem_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, null, null, '00'),
+            'plan_rem_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, null, null, '00'),
+            'plan_rem_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, null, null, '00'),
+            'plan_rem_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, null, null, '00'),
+            'plan_rem_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, null, null, '00'),
+            'plan_rem_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, '00', null, null, 'week'),
 
-            'stu_week1' => $this->pcs->getReport($tahun, $bulan, $week1, null, null, null, 'stu'),
-            'stu_week2' => $this->pcs->getReport($tahun, $bulan, $week2, null, null, null, 'stu'),
-            'stu_week3' => $this->pcs->getReport($tahun, $bulan, $week3, null, null, null, 'stu'),
-            'stu_week4' => $this->pcs->getReport($tahun, $bulan, $week4, null, null, null, 'stu'),
-            'stu_week5' => $this->pcs->getReport($tahun, $bulan, $week5, null, null, null, 'stu'),
-            'stu_act' => $this->pcs->getReport($tahun, $bulan, 0, null, null, null, 'stu', null, 'week'),
+            'rem_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, null, null, '00'),
+            'rem_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, null, null, '00'),
+            'rem_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, null, null, '00'),
+            'rem_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, null, null, '00'),
+            'rem_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, null, null, '00'),
+            'rem_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, '00', null, null, 'week'),
+
+            'plan_btu_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, null, null, null, 'BTU'),
+            'plan_btu_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, null, null, null, 'BTU'),
+            'plan_btu_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, null, null, null, 'BTU'),
+            'plan_btu_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, null, null, null, 'BTU'),
+            'plan_btu_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, null, null, null, 'BTU'),
+            'plan_btu_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, 'BTU', null, 'week'),
+
+            'btu_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, null, null, null, 'BTU'),
+            'btu_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, null, null, null, 'BTU'),
+            'btu_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, null, null, null, 'BTU'),
+            'btu_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, null, null, null, 'BTU'),
+            'btu_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, null, null, null, 'BTU'),
+            'btu_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, 'BTU', null, 'week'),
 
 
-            'plan_mru_week1' => $this->modelinbound->getReport($tahun, $bulan, $week1, null, null, null, 'mru'),
-            'plan_mru_week2' => $this->modelinbound->getReport($tahun, $bulan, $week2, null, null, null, 'mru'),
-            'plan_mru_week3' => $this->modelinbound->getReport($tahun, $bulan, $week3, null, null, null, 'mru'),
-            'plan_mru_week4' => $this->modelinbound->getReport($tahun, $bulan, $week4, null, null, null, 'mru'),
-            'plan_mru_week5' => $this->modelinbound->getReport($tahun, $bulan, $week5, null, null, null, 'mru'),
-            'plan_mru_act' => $this->modelinbound->getReport($tahun, $bulan, 0, null, null, null, 'mru', null, 'week'),
+            'plan_stu_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, null, null, null, 'stu'),
+            'plan_stu_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, null, null, null, 'stu'),
+            'plan_stu_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, null, null, null, 'stu'),
+            'plan_stu_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, null, null, null, 'stu'),
+            'plan_stu_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, null, null, null, 'stu'),
+            'plan_stu_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, 'stu', null, 'week'),
 
-            'mru_week1' => $this->pcs->getReport($tahun, $bulan, $week1, null, null, null, 'mru'),
-            'mru_week2' => $this->pcs->getReport($tahun, $bulan, $week2, null, null, null, 'mru'),
-            'mru_week3' => $this->pcs->getReport($tahun, $bulan, $week3, null, null, null, 'mru'),
-            'mru_week4' => $this->pcs->getReport($tahun, $bulan, $week4, null, null, null, 'mru'),
-            'mru_week5' => $this->pcs->getReport($tahun, $bulan, $week5, null, null, null, 'mru'),
-            'mru_act' => $this->pcs->getReport($tahun, $bulan, 0, null, null, null, 'mru', null, 'week'),
+            'stu_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, null, null, null, 'stu'),
+            'stu_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, null, null, null, 'stu'),
+            'stu_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, null, null, null, 'stu'),
+            'stu_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, null, null, null, 'stu'),
+            'stu_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, null, null, null, 'stu'),
+            'stu_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, 'stu', null, 'week'),
+
+
+            'plan_mru_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, null, null, null, 'mru'),
+            'plan_mru_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, null, null, null, 'mru'),
+            'plan_mru_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, null, null, null, 'mru'),
+            'plan_mru_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, null, null, null, 'mru'),
+            'plan_mru_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, null, null, null, 'mru'),
+            'plan_mru_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, 'mru', null, 'week'),
+
+            'mru_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, null, null, null, 'mru'),
+            'mru_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, null, null, null, 'mru'),
+            'mru_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, null, null, null, 'mru'),
+            'mru_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, null, null, null, 'mru'),
+            'mru_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, null, null, null, 'mru'),
+            'mru_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, 'mru', null, 'week'),
 
             'id_bulan' => $bulan,
             'bulan' => date('F', strtotime(date('Y-' . $bulan . '-d')))
@@ -329,7 +329,7 @@ class Laporan extends AdminBaseController
             'submenu' => 'inbound_list',
         ]);
 
-        $data = $this->dataWeekly();
+        $data = $this->inboundWeekly();
 
         return view($this->view . '/inbound_list', $data);
     }
@@ -338,7 +338,7 @@ class Laporan extends AdminBaseController
     {
         $this->permissionCheck('inbound_list');
 
-        $data  = $this->dataWeekly();
+        $data  = $this->inboundWeekly();
 
         return view($this->view . '/inbound_list_ajax', $data);
     }
@@ -357,7 +357,7 @@ class Laporan extends AdminBaseController
         $week5 = idate('W', strtotime($tahun . '-' . $bulan . '-' . (1 + (7 * 4))));
 
 
-        $data  = $this->dataWeekly();
+        $data  = $this->inboundWeekly();
 
         // phpoffice/phpspreadsheet
         $spreadsheet = new Spreadsheet();
@@ -947,7 +947,7 @@ class Laporan extends AdminBaseController
         $plan = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d)['INBOUND'];
+            $res = $this->modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d)['INBOUND'];
             $plan[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -966,7 +966,7 @@ class Laporan extends AdminBaseController
         $actual = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d)['INBOUND'];
+            $res = $this->pcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d)['INBOUND'];
             $actual[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1008,7 +1008,7 @@ class Laporan extends AdminBaseController
         $plan = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "PIRELLI")['INBOUND'];
+            $res = $this->modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "PIRELLI")['INBOUND'];
             $plan[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1027,7 +1027,7 @@ class Laporan extends AdminBaseController
         $actual = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "PIRELLI")['INBOUND'];
+            $res = $this->pcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "PIRELLI")['INBOUND'];
             $actual[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1069,7 +1069,7 @@ class Laporan extends AdminBaseController
         $plan = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "ASPIRA")['INBOUND'];
+            $res = $this->modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "ASPIRA")['INBOUND'];
             $plan[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1088,7 +1088,7 @@ class Laporan extends AdminBaseController
         $actual = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "ASPIRA")['INBOUND'];
+            $res = $this->pcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: "ASPIRA")['INBOUND'];
             $actual[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1130,7 +1130,7 @@ class Laporan extends AdminBaseController
         $plan = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '10')['INBOUND'];
+            $res = $this->modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '10')['INBOUND'];
             $plan[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1149,7 +1149,7 @@ class Laporan extends AdminBaseController
         $actual = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '10')['INBOUND'];
+            $res = $this->pcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '10')['INBOUND'];
             $actual[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1191,7 +1191,7 @@ class Laporan extends AdminBaseController
         $plan = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '00')['INBOUND'];
+            $res = $this->modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '00')['INBOUND'];
             $plan[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1210,7 +1210,7 @@ class Laporan extends AdminBaseController
         $actual = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '00')['INBOUND'];
+            $res = $this->pcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '00')['INBOUND'];
             $actual[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1252,7 +1252,7 @@ class Laporan extends AdminBaseController
         $plan = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'BTU')['INBOUND'];
+            $res = $this->modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'BTU')['INBOUND'];
             $plan[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1271,7 +1271,7 @@ class Laporan extends AdminBaseController
         $actual = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'BTU')['INBOUND'];
+            $res = $this->pcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'BTU')['INBOUND'];
             $actual[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1313,7 +1313,7 @@ class Laporan extends AdminBaseController
         $plan = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'STU')['INBOUND'];
+            $res = $this->modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'STU')['INBOUND'];
             $plan[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1332,7 +1332,7 @@ class Laporan extends AdminBaseController
         $actual = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'STU')['INBOUND'];
+            $res = $this->pcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'STU')['INBOUND'];
             $actual[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1374,7 +1374,7 @@ class Laporan extends AdminBaseController
         $plan = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'MRU')['INBOUND'];
+            $res = $this->modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'MRU')['INBOUND'];
             $plan[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1393,7 +1393,7 @@ class Laporan extends AdminBaseController
         $actual = [];
         $a = 0;
         foreach ($range_date as $d) {
-            $res = $this->pcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'MRU')['INBOUND'];
+            $res = $this->pcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'MRU')['INBOUND'];
             $actual[$a] = (is_null($res)) ? 0 : $res;
             $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
             $abjadEnd = $abjad[$in];
@@ -1451,5 +1451,292 @@ class Laporan extends AdminBaseController
         @unlink($file_name);
 
         exit;
+    }
+
+
+    private function inboundChartWeekly($type = 'line')
+    {
+        $bulan = ($this->request->getVar('bulan')) ? $this->request->getVar('bulan') : intval(date('m'));
+        $tahun = ($this->request->getVar('tahun')) ? $this->request->getVar('tahun') : intval(date('Y'));
+
+
+        if ($type == 'line') {
+            $week1 = idate('W', strtotime($tahun . '-' . $bulan . '-' . '01'));
+            $week2 = idate('W', strtotime($tahun . '-' . $bulan . '-' . (1 + 7)));
+            $week3 = idate('W', strtotime($tahun . '-' . $bulan . '-' . (1 + (7 * 2))));
+            $week4 = idate('W', strtotime($tahun . '-' . $bulan . '-' . (1 + (7 * 3))));
+            $week5 = idate('W', strtotime($tahun . '-' . $bulan . '-' . (1 + (7 * 4))));
+
+
+            $data = [
+                'title' => 'Report',
+                'tahun' => $tahun,
+                // 'rim_list' => $this->pcs->getRimList($tahun, $bulan, 0),
+                'total_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1),
+                'total_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2),
+                'total_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3),
+                'total_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4),
+                'total_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5),
+
+                'plan_total_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1),
+                'plan_total_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2),
+                'plan_total_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3),
+                'plan_total_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4),
+                'plan_total_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5),
+
+
+                'total_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, null, null, 'week'),
+                'plan_total_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, null, null, 'week'),
+
+                'pirelli_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, 'PIRELLi'),
+                'pirelli_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, 'PIRELLi'),
+                'pirelli_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, 'PIRELLi'),
+                'pirelli_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, 'PIRELLi'),
+                'pirelli_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, 'PIRELLi'),
+
+                'plan_pirelli_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, 'PIRELLi'),
+                'plan_pirelli_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, 'PIRELLi'),
+                'plan_pirelli_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, 'PIRELLi'),
+                'plan_pirelli_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, 'PIRELLi'),
+                'plan_pirelli_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, 'PIRELLi'),
+
+                'plan_pirelli_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, 'PIRELLi',  null, null, null, null, 'week'),
+
+                'pirelli_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, 'PIRELLi',  null, null, null, null, 'week'),
+                'aspira_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, 'aspira'),
+                'aspira_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, 'aspira'),
+                'aspira_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, 'aspira'),
+                'aspira_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, 'aspira'),
+                'aspira_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, 'aspira'),
+                'aspira_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, 'aspira',  null, null, null, null, 'week'),
+
+                'plan_aspira_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, 'aspira'),
+                'plan_aspira_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, 'aspira'),
+                'plan_aspira_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, 'aspira'),
+                'plan_aspira_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, 'aspira'),
+                'plan_aspira_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, 'aspira'),
+                'plan_aspira_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, 'aspira',  null, null, null, null, 'week'),
+
+                'plan_oe_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, null, null, '10'),
+                'plan_oe_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, null, null, '10'),
+                'plan_oe_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, null, null, '10'),
+                'plan_oe_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, null, null, '10'),
+                'plan_oe_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, null, null, '10'),
+                'plan_oe_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, '10', null, null, 'week'),
+
+                'oe_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, null, null, '10'),
+                'oe_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, null, null, '10'),
+                'oe_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, null, null, '10'),
+                'oe_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, null, null, '10'),
+                'oe_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, null, null, '10'),
+                'oe_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, '10', null, null, 'week'),
+
+
+                'plan_rem_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, null, null, '00'),
+                'plan_rem_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, null, null, '00'),
+                'plan_rem_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, null, null, '00'),
+                'plan_rem_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, null, null, '00'),
+                'plan_rem_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, null, null, '00'),
+                'plan_rem_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, '00', null, null, 'week'),
+
+                'rem_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, null, null, '00'),
+                'rem_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, null, null, '00'),
+                'rem_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, null, null, '00'),
+                'rem_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, null, null, '00'),
+                'rem_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, null, null, '00'),
+                'rem_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, '00', null, null, 'week'),
+
+                'plan_btu_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, null, null, null, 'BTU'),
+                'plan_btu_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, null, null, null, 'BTU'),
+                'plan_btu_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, null, null, null, 'BTU'),
+                'plan_btu_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, null, null, null, 'BTU'),
+                'plan_btu_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, null, null, null, 'BTU'),
+                'plan_btu_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, 'BTU', null, 'week'),
+
+                'btu_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, null, null, null, 'BTU'),
+                'btu_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, null, null, null, 'BTU'),
+                'btu_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, null, null, null, 'BTU'),
+                'btu_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, null, null, null, 'BTU'),
+                'btu_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, null, null, null, 'BTU'),
+                'btu_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, 'BTU', null, 'week'),
+
+
+                'plan_stu_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, null, null, null, 'stu'),
+                'plan_stu_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, null, null, null, 'stu'),
+                'plan_stu_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, null, null, null, 'stu'),
+                'plan_stu_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, null, null, null, 'stu'),
+                'plan_stu_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, null, null, null, 'stu'),
+                'plan_stu_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, 'stu', null, 'week'),
+
+                'stu_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, null, null, null, 'stu'),
+                'stu_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, null, null, null, 'stu'),
+                'stu_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, null, null, null, 'stu'),
+                'stu_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, null, null, null, 'stu'),
+                'stu_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, null, null, null, 'stu'),
+                'stu_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, 'stu', null, 'week'),
+
+
+                'plan_mru_week1' => $this->modelinbound->getDataInbound($tahun, $bulan, $week1, null, null, null, 'mru'),
+                'plan_mru_week2' => $this->modelinbound->getDataInbound($tahun, $bulan, $week2, null, null, null, 'mru'),
+                'plan_mru_week3' => $this->modelinbound->getDataInbound($tahun, $bulan, $week3, null, null, null, 'mru'),
+                'plan_mru_week4' => $this->modelinbound->getDataInbound($tahun, $bulan, $week4, null, null, null, 'mru'),
+                'plan_mru_week5' => $this->modelinbound->getDataInbound($tahun, $bulan, $week5, null, null, null, 'mru'),
+                'plan_mru_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, 'mru', null, 'week'),
+
+                'mru_week1' => $this->pcs->getDataInbound($tahun, $bulan, $week1, null, null, null, 'mru'),
+                'mru_week2' => $this->pcs->getDataInbound($tahun, $bulan, $week2, null, null, null, 'mru'),
+                'mru_week3' => $this->pcs->getDataInbound($tahun, $bulan, $week3, null, null, null, 'mru'),
+                'mru_week4' => $this->pcs->getDataInbound($tahun, $bulan, $week4, null, null, null, 'mru'),
+                'mru_week5' => $this->pcs->getDataInbound($tahun, $bulan, $week5, null, null, null, 'mru'),
+                'mru_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, 'mru', null, 'week'),
+
+                'id_bulan' => $bulan,
+                'bulan' => date('F', strtotime(date('Y-' . $bulan . '-d')))
+            ];
+
+            $total = [];
+            $total[] = ($data['total_week1'] == '' || $data['plan_total_week1'] == '') ? 0 : round(($data['total_week1'] / $data['plan_total_week1']) * 100, 1);
+            $total[] = ($data['total_week2'] == '' || $data['plan_total_week2'] == '') ? 0 : round(($data['total_week2'] / $data['plan_total_week2']) * 100, 1);
+            $total[] = ($data['total_week3'] == '' || $data['plan_total_week3'] == '') ? 0 : round(($data['total_week3'] / $data['plan_total_week3']) * 100, 1);
+            $total[] = ($data['total_week4'] == '' || $data['plan_total_week4'] == '') ? 0 : round(($data['total_week4'] / $data['plan_total_week4']) * 100, 1);
+            $total[] = ($data['total_week5'] == '' || $data['plan_total_week5'] == '') ? 0 : round(($data['total_week5'] / $data['plan_total_week5']) * 100, 1);
+
+            $pirelli = [];
+            $pirelli[] = ($data['pirelli_week1'] == '' || $data['plan_pirelli_week1'] == '') ? 0 : round(($data['pirelli_week1'] / $data['plan_pirelli_week1']) * 100, 1);
+            $pirelli[] = ($data['pirelli_week2'] == '' || $data['plan_pirelli_week2'] == '') ? 0 : round(($data['pirelli_week2'] / $data['plan_pirelli_week2']) * 100, 1);
+            $pirelli[] = ($data['pirelli_week3'] == '' || $data['plan_pirelli_week3'] == '') ? 0 : round(($data['pirelli_week3'] / $data['plan_pirelli_week3']) * 100, 1);
+            $pirelli[] = ($data['pirelli_week4'] == '' || $data['plan_pirelli_week4'] == '') ? 0 : round(($data['pirelli_week4'] / $data['plan_pirelli_week4']) * 100, 1);
+            $pirelli[] = ($data['pirelli_week5'] == '' || $data['plan_pirelli_week5'] == '') ? 0 : round(($data['pirelli_week5'] / $data['plan_pirelli_week5']) * 100, 1);
+
+            $aspira = [];
+            $aspira[] = ($data['aspira_week1'] == '' || $data['plan_aspira_week1'] == '') ? 0 : round(($data['aspira_week1'] / $data['plan_aspira_week1']) * 100, 1);
+            $aspira[] = ($data['aspira_week2'] == '' || $data['plan_aspira_week2'] == '') ? 0 : round(($data['aspira_week2'] / $data['plan_aspira_week2']) * 100, 1);
+            $aspira[] = ($data['aspira_week3'] == '' || $data['plan_aspira_week3'] == '') ? 0 : round(($data['aspira_week3'] / $data['plan_aspira_week3']) * 100, 1);
+            $aspira[] = ($data['aspira_week4'] == '' || $data['plan_aspira_week4'] == '') ? 0 : round(($data['aspira_week4'] / $data['plan_aspira_week4']) * 100, 1);
+            $aspira[] = ($data['aspira_week5'] == '' || $data['plan_aspira_week5'] == '') ? 0 : round(($data['aspira_week5'] / $data['plan_aspira_week5']) * 100, 1);
+
+            $oe = [];
+            $oe[] = ($data['oe_week1'] == '' || $data['plan_oe_week1'] == '') ? 0 : round(($data['oe_week1'] / $data['plan_oe_week1']) * 100, 1);
+            $oe[] = ($data['oe_week2'] == '' || $data['plan_oe_week2'] == '') ? 0 : round(($data['oe_week2'] / $data['plan_oe_week2']) * 100, 1);
+            $oe[] = ($data['oe_week3'] == '' || $data['plan_oe_week3'] == '') ? 0 : round(($data['oe_week3'] / $data['plan_oe_week3']) * 100, 1);
+            $oe[] = ($data['oe_week4'] == '' || $data['plan_oe_week4'] == '') ? 0 : round(($data['oe_week4'] / $data['plan_oe_week4']) * 100, 1);
+            $oe[] = ($data['oe_week5'] == '' || $data['plan_oe_week5'] == '') ? 0 : round(($data['oe_week5'] / $data['plan_oe_week5']) * 100, 1);
+
+            $rem = [];
+            $rem[] = ($data['rem_week1'] == '' || $data['plan_rem_week1'] == '') ? 0 : round(($data['rem_week1'] / $data['plan_rem_week1']) * 100, 1);
+            $rem[] = ($data['rem_week2'] == '' || $data['plan_rem_week2'] == '') ? 0 : round(($data['rem_week2'] / $data['plan_rem_week2']) * 100, 1);
+            $rem[] = ($data['rem_week3'] == '' || $data['plan_rem_week3'] == '') ? 0 : round(($data['rem_week3'] / $data['plan_rem_week3']) * 100, 1);
+            $rem[] = ($data['rem_week4'] == '' || $data['plan_rem_week4'] == '') ? 0 : round(($data['rem_week4'] / $data['plan_rem_week4']) * 100, 1);
+            $rem[] = ($data['rem_week5'] == '' || $data['plan_rem_week5'] == '') ? 0 : round(($data['rem_week5'] / $data['plan_rem_week5']) * 100, 1);
+
+            $btu = [];
+            $btu[] = ($data['btu_week1'] == '' || $data['plan_btu_week1'] == '') ? 0 : round(($data['btu_week1'] / $data['plan_btu_week1']) * 100, 1);
+            $btu[] = ($data['btu_week2'] == '' || $data['plan_btu_week2'] == '') ? 0 : round(($data['btu_week2'] / $data['plan_btu_week2']) * 100, 1);
+            $btu[] = ($data['btu_week3'] == '' || $data['plan_btu_week3'] == '') ? 0 : round(($data['btu_week3'] / $data['plan_btu_week3']) * 100, 1);
+            $btu[] = ($data['btu_week4'] == '' || $data['plan_btu_week4'] == '') ? 0 : round(($data['btu_week4'] / $data['plan_btu_week4']) * 100, 1);
+            $btu[] = ($data['btu_week5'] == '' || $data['plan_btu_week5'] == '') ? 0 : round(($data['btu_week5'] / $data['plan_btu_week5']) * 100, 1);
+
+            $stu = [];
+            $stu[] = ($data['stu_week1'] == '' || $data['plan_stu_week1'] == '') ? 0 : round(($data['stu_week1'] / $data['plan_stu_week1']) * 100, 1);
+            $stu[] = ($data['stu_week2'] == '' || $data['plan_stu_week2'] == '') ? 0 : round(($data['stu_week2'] / $data['plan_stu_week2']) * 100, 1);
+            $stu[] = ($data['stu_week3'] == '' || $data['plan_stu_week3'] == '') ? 0 : round(($data['stu_week3'] / $data['plan_stu_week3']) * 100, 1);
+            $stu[] = ($data['stu_week4'] == '' || $data['plan_stu_week4'] == '') ? 0 : round(($data['stu_week4'] / $data['plan_stu_week4']) * 100, 1);
+            $stu[] = ($data['stu_week5'] == '' || $data['plan_stu_week5'] == '') ? 0 : round(($data['stu_week5'] / $data['plan_stu_week5']) * 100, 1);
+
+            $mru = [];
+            $mru[] = ($data['mru_week1'] == '' || $data['plan_mru_week1'] == '') ? 0 : round(($data['mru_week1'] / $data['plan_mru_week1']) * 100, 1);
+            $mru[] = ($data['mru_week2'] == '' || $data['plan_mru_week2'] == '') ? 0 : round(($data['mru_week2'] / $data['plan_mru_week2']) * 100, 1);
+            $mru[] = ($data['mru_week3'] == '' || $data['plan_mru_week3'] == '') ? 0 : round(($data['mru_week3'] / $data['plan_mru_week3']) * 100, 1);
+            $mru[] = ($data['mru_week4'] == '' || $data['plan_mru_week4'] == '') ? 0 : round(($data['mru_week4'] / $data['plan_mru_week4']) * 100, 1);
+            $mru[] = ($data['mru_week5'] == '' || $data['plan_mru_week5'] == '') ? 0 : round(($data['mru_week5'] / $data['plan_mru_week5']) * 100, 1);
+
+
+            $data = [
+                'title' => 'chart',
+                'total' => $total,
+                'pirelli' => $pirelli,
+                'aspira' => $aspira,
+                'oe' => $oe,
+                'rem' => $rem,
+                'btu' => $btu,
+                'stu' => $stu,
+                'mru' => $mru,
+                'bulan' => $data['bulan'],
+                'tahun' => $tahun,
+            ];
+        } else {
+            $data = [
+                'total_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, null, null, 'week')['INBOUND'],
+                'plan_total_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, null, null, 'week')['INBOUND'],
+                'plan_pirelli_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, 'PIRELLi',  null, null, null, null, 'week')['INBOUND'],
+                'pirelli_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, 'pirelli',  null, null, null, null, 'week')['INBOUND'],
+                'aspira_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, 'aspira',  null, null, null, null, 'week')['INBOUND'],
+                'plan_aspira_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, 'aspira',  null, null, null, null, 'week')['INBOUND'],
+                'plan_oe_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, '10', null, null, 'week')['INBOUND'],
+                'oe_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, '10', null, null, 'week')['INBOUND'],
+                'plan_rem_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, '00', null, null, 'week')['INBOUND'],
+                'rem_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, '00', null, null, 'week')['INBOUND'],
+                'plan_btu_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, 'BTU',  null, 'week')['INBOUND'],
+                'btu_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, 'BTU',  null, 'week')['INBOUND'],
+                'plan_stu_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, 'stu',  null, 'week')['INBOUND'],
+                'stu_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, 'stu',  null, 'week')['INBOUND'],
+                'plan_mru_act' => $this->modelinbound->getDataInbound($tahun, $bulan, 0, null, null, null, 'mru',  null, 'week')['INBOUND'],
+                'mru_act' => $this->pcs->getDataInbound($tahun, $bulan, 0, null, null, null, 'mru',  null, 'week')['INBOUND'],
+                'id_bulan' => $bulan,
+                'bulan' => date('F', strtotime(date('Y-' . $bulan . '-d')))
+            ];
+
+
+            $res = [
+                'title' => 'chart',
+                'total' => $data['total_act'] - $data['plan_total_act'],
+                'pirelli' => $data['pirelli_act'] - $data['plan_pirelli_act'],
+                'aspira' => $data['aspira_act'] - $data['plan_aspira_act'],
+                'oe' => $data['oe_act'] - $data['plan_oe_act'],
+                'rem' => $data['rem_act'] - $data['plan_rem_act'],
+                'btu' => $data['btu_act'] - $data['plan_btu_act'],
+                'stu' => $data['stu_act'] - $data['plan_stu_act'],
+                'mru' => $data['mru_act'] - $data['plan_mru_act'],
+                'bulan' => $data['bulan'],
+                'tahun' => $tahun,
+            ];
+
+            $json = [];
+            $json[] = $res['total'];
+            $json[] = $res['pirelli'];
+            $json[] = $res['aspira'];
+            $json[] = $res['oe'];
+            $json[] = $res['rem'];
+            $json[] = $res['btu'];
+            $json[] = $res['stu'];
+            $json[] = $res['mru'];
+
+            $data = [
+                'title' => 'chart',
+                'data'  => $json,
+                'bulan' => $data['bulan'],
+                'tahun' => $tahun,
+            ];
+        }
+
+        return $data;
+    }
+
+    public function inboundChart()
+    {
+        $this->permissionCheck('inbound_chart');
+        $this->updatePageData([
+            'title' => 'Laporan Inbound Chart',
+            'submenu' => 'inbound_list',
+        ]);
+        $data  = $this->inboundChartWeekly('bar');
+        return view($this->view . '/inbound_chart', $data);
+    }
+
+    public function ajaxInboundChart()
+    {
+        $this->permissionCheck('inbound_chart');
+        $data  = $this->inboundChartWeekly('bar');
+        return json_encode($data);
     }
 }

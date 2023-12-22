@@ -26,7 +26,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d)['INBOUND'];
+                $res = $modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d)['INBOUND'];
                 $plan[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -42,7 +42,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelpcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d)['INBOUND'];
+                $res = $modelpcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d)['INBOUND'];
                 $actual[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -73,7 +73,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: 'PIRELLI')['INBOUND'];
+                $res = $modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: 'PIRELLI')['INBOUND'];
                 $plan[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -88,7 +88,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelpcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: 'PIRELLI')['INBOUND'];
+                $res = $modelpcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: 'PIRELLI')['INBOUND'];
                 $actual[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -118,7 +118,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: 'ASPIRA')['INBOUND'];
+                $res = $modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: 'ASPIRA')['INBOUND'];
                 $plan[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -133,7 +133,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelpcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: 'ASPIRA')['INBOUND'];
+                $res = $modelpcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, brand: 'ASPIRA')['INBOUND'];
                 $actual[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -164,7 +164,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '10')['INBOUND'];
+                $res = $modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '10')['INBOUND'];
                 $plan[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -179,7 +179,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelpcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '10')['INBOUND'];
+                $res = $modelpcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '10')['INBOUND'];
                 $actual[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -209,7 +209,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '00')['INBOUND'];
+                $res = $modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '00')['INBOUND'];
                 $plan[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -224,7 +224,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelpcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '00')['INBOUND'];
+                $res = $modelpcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, cost_center: '00')['INBOUND'];
                 $actual[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -255,7 +255,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'BTU')['INBOUND'];
+                $res = $modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'BTU')['INBOUND'];
                 $plan[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -270,7 +270,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelpcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'BTU')['INBOUND'];
+                $res = $modelpcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'BTU')['INBOUND'];
                 $actual[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -300,7 +300,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'STU')['INBOUND'];
+                $res = $modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'STU')['INBOUND'];
                 $plan[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -315,7 +315,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelpcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'STU')['INBOUND'];
+                $res = $modelpcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'STU')['INBOUND'];
                 $actual[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -345,7 +345,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelinbound->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'MRU')['INBOUND'];
+                $res = $modelinbound->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'MRU')['INBOUND'];
                 $plan[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
@@ -360,7 +360,7 @@ $modelinbound = new \App\Models\PlannedInboundModel();
             $a = 0;
             foreach ($range_date as $d) : ?>
                 <?php
-                $res = $modelpcs->getReport(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'MRU')['INBOUND'];
+                $res = $modelpcs->getDataInbound(tahun: date('Y', strtotime($d)), bulan: date('m', strtotime($d)), date: $d, mch_type: 'MRU')['INBOUND'];
                 $actual[$a] = (is_null($res)) ? 0 : $res;
                 $a++;
                 ?>
