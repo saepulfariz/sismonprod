@@ -143,3 +143,6 @@ $routes->get('laporan/chart_curing/(:num)/(:num)', '\App\Controllers\Laporan::ch
 
 $routes->get('laporan/ajax_curingip', '\App\Controllers\Laporan::ajaxCuringIp');
 $routes->get('laporan/ajax_curingmachine', '\App\Controllers\Laporan::ajaxCuringMachine');
+
+$routes->get('laporan/inbound', '\App\Controllers\Laporan::inbound');
+$routes->get('laporan/inbound_ajax', '\App\Controllers\Laporan::inboundAjax');

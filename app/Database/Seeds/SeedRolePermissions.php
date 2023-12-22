@@ -281,6 +281,13 @@ class SeedRolePermissions extends Seeder
                 'role_id'    => 1,
                 'permission_id'    => 54,
             ],
+
+
+            // inbound
+            [
+                'role_id'    => 1,
+                'permission_id'    => 55,
+            ],
         ];
 
         $this->db->table('role_permissions')->insertBatch($data);

@@ -254,6 +254,12 @@ class SeedPermissions extends Seeder
                 'title'    => 'Laporan Table Curing',
                 'code'    => 'table_curing',
             ],
+
+
+            [
+                'title'    => 'Laporan Inbound List',
+                'code'    => 'inbound_list',
+            ],
         ];
 
         $this->db->table('permissions')->insertBatch($data);

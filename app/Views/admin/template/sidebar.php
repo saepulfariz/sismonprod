@@ -209,8 +209,9 @@
         $hasChartBuilding = hasPermissions('chart_building');
         $hasChartCuring = hasPermissions('chart_curing');
         $hasTableBuilding = hasPermissions('table_building');
+        $hasInboundList = hasPermissions('inbound_list');
         ?>
-        <?php if ($hasChartCuring || $hasChartBuilding || $hasTableBuilding) : ?>
+        <?php if ($hasInboundList || $hasChartCuring || $hasChartBuilding || $hasTableBuilding) : ?>
           <li class="sidebar-item  has-sub <?= (@$_page->menu == 'laporan') ? 'active' : '' ?>">
             <a href="#" class='sidebar-link'>
               <i class="fas fa-cog"></i>
@@ -241,6 +242,15 @@
 
                 <li class="submenu-item  <?php echo (@$_page->submenu == 'chart_curing') ? 'active' : '' ?>">
                   <a href="<?= base_url('laporan/chart_curing') ?>" class="submenu-link">Chart Curing </a>
+
+                </li>
+
+              <?php endif; ?>
+
+              <?php if ($hasInboundList) : ?>
+
+                <li class="submenu-item  <?php echo (@$_page->submenu == 'inbound_list') ? 'active' : '' ?>">
+                  <a href="<?= base_url('laporan/inbound') ?>" class="submenu-link">Laporan Inbound </a>
 
                 </li>
 

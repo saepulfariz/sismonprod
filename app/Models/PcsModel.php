@@ -471,4 +471,302 @@ class PcsModel extends Model
         }
         return $new_data;
     }
+
+    public function getReport($tahun = null, $bulan = 1, $week = 0, $brand = null, $rim = null,  $cost_center = null, $mch_type = null, $date = null, $get = null)
+    {
+
+        $tahun = ($tahun == null) ? date('Y') : $tahun;
+        $sqlweek = "";
+        $sqlbulan = "AND MONTH(CMV_CONSIGNMENT_DATETIME) = '" . $bulan . "'";
+        $sqlbrand = "";
+        $sqlrim = "";
+        $sqlmch = "";
+        $sqlcc = "";
+        $sqldate = "";
+        $sqltahun = "";
+
+        // $sqlminusdate = "AND CONVERT(date, CMV_CONSIGNMENT_DATETIME) < CONVERT(date, GETDATE())";
+        $sqlminusdate = "AND CONVERT(date, CMV_CONSIGNMENT_DATETIME) < '" . date('Y-m-d') . "'";
+
+
+        $weeknow = idate('W', strtotime(date('Y-m-d')));
+        if ($week != 0) {
+            // $sqlweek = "AND ((DATEPART(day, CMV_CONSIGNMENT_DATETIME) -1) / 7) + 1 = '" . $week . "'";
+            $sqlweek = "AND DATEPART(iso_week, CMV_CONSIGNMENT_DATETIME)  = '" . $week . "'";
+            if ($weeknow == $week) {
+                // jika sama maka filter sebelum hari ini
+                $sqlweek .= $sqlminusdate;
+            }
+        }
+
+        $bulannow = date('m');
+        if ($bulan == $bulannow) {
+            // jika sama maka filter sebelum hari ini
+
+            if ($week != null) {
+                if ($week >= $weeknow) {
+                    $sqlweek .= $sqlminusdate;
+                    // jika sama maka filter sebelum hari ini
+                }
+            }
+        }
+
+        if ($get != null) {
+            //    ada dua chart dan weekly biasa
+            $sqlweek .= $sqlminusdate;
+        }
+
+        if ($brand != null) {
+            $sqlbrand = "AND CS.CST_DESC = '" . strtoupper($brand) . "'";
+        }
+
+        if ($rim != null) {
+            $sqlrim = "AND RM.MD_PPA_VALUE = '" . $rim . "'";
+        }
+
+        if ($date != null) {
+            $sqldate = "AND CONVERT(date, CMV_CONSIGNMENT_DATETIME) = '" . $date . "'";
+        }
+
+        if ($tahun != null) {
+            $sqltahun = "AND YEAR(CMV_CONSIGNMENT_DATETIME)= '" . $tahun . "'";
+        }
+
+        if ($mch_type != null) {
+            $mch_type = strtoupper($mch_type);
+            if ($mch_type == 'BTU') {
+                // karena ada BTU DAN SBTU
+                $sqlmch = "AND (
+                                CASE WHEN (SELECT
+                                    TOP 1 (
+                                        SELECT
+                                            TOP 1 MT_CODE
+                                        FROM
+                                            MD_PROCESS_PARAMETERS as MDRS
+                                        WHERE
+                                            MDRS.MAT_SAP_CODE = DCC.MAT_SAP_CODE
+                                    )
+                                FROM
+                                    MD_MATERIALS as DCC
+                                WHERE
+                                    DCC.CNT_CODE = 'CAH'
+                                    AND DCC.MAT_CODE = MAT.MAT_CODE
+                                ORDER BY
+                                    MAT_IMPORT_TIMESTAMP DESC)  IS NULL THEN (SELECT
+                                    TOP 1 (
+                                        SELECT
+                                            TOP 1 MT_CODE
+                                        FROM
+                                            MD_PROCESS_PARAMETERS as MDRS
+                                        WHERE
+                                            MDRS.MAT_SAP_CODE = DCC.MAT_SAP_CODE
+                                    )
+                                FROM
+                                    MD_MATERIALS as DCC
+                                WHERE
+                                    DCC.CNT_CODE = 'CAH'
+                                    AND DCC.MAT_CODE = MAT.MAT_CODE
+                                ORDER BY
+                                    MAT_IMPORT_TIMESTAMP ASC) ELSE (SELECT
+                                    TOP 1 (
+                                        SELECT
+                                            TOP 1 MT_CODE
+                                        FROM
+                                            MD_PROCESS_PARAMETERS as MDRS
+                                        WHERE
+                                            MDRS.MAT_SAP_CODE = DCC.MAT_SAP_CODE
+                                    )
+                                FROM
+                                    MD_MATERIALS as DCC
+                                WHERE
+                                    DCC.CNT_CODE = 'CAH'
+                                    AND DCC.MAT_CODE = MAT.MAT_CODE
+                                ORDER BY
+                                    MAT_IMPORT_TIMESTAMP DESC) END
+                            ) IN ('SBTU', 'BTUM')";
+            } else {
+                $sqlmch = "AND (
+                            CASE WHEN (SELECT
+                                TOP 1 (
+                                    SELECT
+                                        TOP 1 MT_CODE
+                                    FROM
+                                        MD_PROCESS_PARAMETERS as MDRS
+                                    WHERE
+                                        MDRS.MAT_SAP_CODE = DCC.MAT_SAP_CODE
+                                )
+                            FROM
+                                MD_MATERIALS as DCC
+                            WHERE
+                                DCC.CNT_CODE = 'CAH'
+                                AND DCC.MAT_CODE = MAT.MAT_CODE
+                            ORDER BY
+                                MAT_IMPORT_TIMESTAMP DESC)  IS NULL THEN (SELECT
+                                TOP 1 (
+                                    SELECT
+                                        TOP 1 MT_CODE
+                                    FROM
+                                        MD_PROCESS_PARAMETERS as MDRS
+                                    WHERE
+                                        MDRS.MAT_SAP_CODE = DCC.MAT_SAP_CODE
+                                )
+                            FROM
+                                MD_MATERIALS as DCC
+                            WHERE
+                                DCC.CNT_CODE = 'CAH'
+                                AND DCC.MAT_CODE = MAT.MAT_CODE
+                            ORDER BY
+                                MAT_IMPORT_TIMESTAMP ASC) ELSE (SELECT
+                                TOP 1 (
+                                    SELECT
+                                        TOP 1 MT_CODE
+                                    FROM
+                                        MD_PROCESS_PARAMETERS as MDRS
+                                    WHERE
+                                        MDRS.MAT_SAP_CODE = DCC.MAT_SAP_CODE
+                                )
+                            FROM
+                                MD_MATERIALS as DCC
+                            WHERE
+                                DCC.CNT_CODE = 'CAH'
+                                AND DCC.MAT_CODE = MAT.MAT_CODE
+                            ORDER BY
+                                MAT_IMPORT_TIMESTAMP DESC) END
+                        ) LIKE '%" . $mch_type . "%'";
+            }
+        }
+
+        if ($cost_center != null) {
+            $sqlcc = "AND MOV.COST_CENTER = '" . $cost_center . "'";
+        }
+
+        $sqlUnion = "SELECT
+                        SUM(CMV_PALLET_QTY) AS INBOUND
+                        FROM (SELECT 
+                        CNT_CODE,
+                        MAT_VARIANT,
+                        MAT_SAP_CODE,
+                        MAT_PART_CLASS,
+                        COST_CENTER,
+                        PALLET_TYPE_CODE,
+                            CMV_BARCODE,
+                            CMV_CREATE_DATETIME,
+                            CMV_READ1_DATETIME,
+                            CMV_READ2_DATETIME,
+                            CMV_CONSIGNMENT_DATETIME,
+                            CMV_CONSIGNMENT_FLAG,
+                            CMV_PALLET_QTY 
+                            
+                            FROM CMS_MOVEMENTS 
+                            UNION ALL
+                            SELECT 
+                            CNT_CODE,
+                        MAT_VARIANT,
+                        MAT_SAP_CODE,
+                        MAT_PART_CLASS,
+                        COST_CENTER,
+                        PALLET_TYPE_CODE,
+                            CMV_BARCODE,
+                            CMV_CREATE_DATETIME,
+                            CMV_READ1_DATETIME,
+                            CMV_READ2_DATETIME,
+                            CMV_CONSIGNMENT_DATETIME,
+                            CMV_CONSIGNMENT_FLAG,
+                            CMV_PALLET_QTY 
+                            
+                            FROM HIS_CMS_MOVEMENTS
+                        ) AS MOV
+                        JOIN MD_MATERIALS AS MAT ON MOV.MAT_SAP_CODE = MAT.MAT_SAP_CODE
+                        AND MOV.CNT_CODE = MAT.CNT_CODE
+                        AND MOV.MAT_VARIANT = MAT.MAT_VARIANT
+                        JOIN CMS_MATERIALS AS CMT ON CMT.MAT_SAP_CODE = MOV.MAT_SAP_CODE
+                        AND CMT.MAT_VARIANT = MOV.MAT_VARIANT
+                        AND CMT.CNT_CODE = MOV.CNT_CODE
+                        AND CMT.MAT_PART_CLASS = MOV.MAT_PART_CLASS
+                        AND CMT.COST_CENTER = MOV.COST_CENTER
+                        AND CMT.PALLET_TYPE_CODE = MOV.PALLET_TYPE_CODE
+                        JOIN (
+                            SELECT
+                                SFC_CODE,
+                                SFS_SUBCODE,
+                                SFS_DESC
+                            FROM
+                                MD_SEMI_FINISHED_SUBCLASSES
+                            WHERE
+                                (
+                                    SFS_PLANT_CODE = null
+                                    OR null = ''
+                                    OR null IS NULL
+                                )
+                                OR SFS_PLANT_CODE IS NULL
+                                OR SFS_PLANT_CODE = ''
+                        ) SFS ON SFS.SFC_CODE = MAT.SFC_CODE
+                        AND SFS.SFS_SUBCODE = MAT.SFS_SUBCODE 
+                        --and convert(date,CMV_CONSIGNMENT_DATETIME) >='2023-05-02 00:00:00.000' and  convert(date,CMV_CONSIGNMENT_DATETIME) <'2023-05-06 00:00:00.000'
+                        JOIN MD_PROCESS_PARAMETERS_ACYCLE_VALUE AS RM ON RM.MAT_SAP_CODE = MOV.MAT_SAP_CODE
+                        AND ST_CODE = 801
+                        JOIN WMS_CUSTOMERS AS CS ON CS.CST_CODE = CMT.CST_CODE -- biar cari yang NOT NULL
+                        WHERE 1 = 1 
+                        " . $sqlbrand . "
+                        " . $sqlweek . "
+                        " . $sqlbulan . "
+                        " . $sqlrim . "
+                        " . $sqlmch . "
+                        " . $sqlcc . "
+                        " . $sqldate . "
+                        " . $sqltahun . "
+                        ";
+
+        // var_dump($sqlUnion);
+        // die;
+
+        $sql = "SELECT
+                        SUM(CMV_PALLET_QTY) AS INBOUND
+                    FROM
+                        CMS_MOVEMENTS AS MOV
+                        JOIN MD_MATERIALS AS MAT ON MOV.MAT_SAP_CODE = MAT.MAT_SAP_CODE
+                        AND MOV.CNT_CODE = MAT.CNT_CODE
+                        AND MOV.MAT_VARIANT = MAT.MAT_VARIANT
+                        JOIN CMS_MATERIALS AS CMT ON CMT.MAT_SAP_CODE = MOV.MAT_SAP_CODE
+                        AND CMT.MAT_VARIANT = MOV.MAT_VARIANT
+                        AND CMT.CNT_CODE = MOV.CNT_CODE
+                        AND CMT.MAT_PART_CLASS = MOV.MAT_PART_CLASS
+                        AND CMT.COST_CENTER = MOV.COST_CENTER
+                        AND CMT.PALLET_TYPE_CODE = MOV.PALLET_TYPE_CODE
+                        JOIN (
+                            SELECT
+                                SFC_CODE,
+                                SFS_SUBCODE,
+                                SFS_DESC
+                            FROM
+                                MD_SEMI_FINISHED_SUBCLASSES
+                            WHERE
+                                (
+                                    SFS_PLANT_CODE = null
+                                    OR null = ''
+                                    OR null IS NULL
+                                )
+                                OR SFS_PLANT_CODE IS NULL
+                                OR SFS_PLANT_CODE = ''
+                        ) SFS ON SFS.SFC_CODE = MAT.SFC_CODE
+                        AND SFS.SFS_SUBCODE = MAT.SFS_SUBCODE 
+                        --and convert(date,CMV_CONSIGNMENT_DATETIME) >='2023-05-02 00:00:00.000' and  convert(date,CMV_CONSIGNMENT_DATETIME) <'2023-05-06 00:00:00.000'
+                        JOIN MD_PROCESS_PARAMETERS_ACYCLE_VALUE AS RM ON RM.MAT_SAP_CODE = MOV.MAT_SAP_CODE
+                        AND ST_CODE = 801
+                        JOIN WMS_CUSTOMERS AS CS ON CS.CST_CODE = CMT.CST_CODE -- biar cari yang NOT NULL
+                    WHERE 1 = 1
+                        --CMV_CONSIGNMENT_DATETIME IS NOT NULL 
+                        " . $sqlbrand . "
+                        " . $sqlweek . "
+                        " . $sqlbulan . "
+                        " . $sqlrim . "
+                        " . $sqlmch . "
+                        " . $sqlcc . "
+                        " . $sqldate . "
+                        " . $sqltahun . "
+            ";
+        $data = $this->pcs->query($sqlUnion)->getRowArray();
+
+        return $data;
+    }
 }
