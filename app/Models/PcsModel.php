@@ -769,4 +769,128 @@ class PcsModel extends Model
 
         return $data;
     }
+
+    public function getDataInboundRimList($tahun = null, $bulan = 1, $week = 0, $brand = null, $rim = null)
+    {
+        $tahun = ($tahun == null) ? date('Y') : $tahun;
+        if (getenv('APP_PROD') == 'LOCAL') {
+            $builder = $this->pcs->table($this->table);
+            $builder->select('RIM');
+            if ($week != 0) {
+                $builder->where('WEEK', $week);
+            }
+            if ($brand != null) {
+                $builder->where('BRAND', strtoupper($brand));
+            }
+
+
+
+            $builder->where('MONTH(CMV_CONSIGNMENT_DATETIME)', $bulan);
+            $builder->groupBy('RIM');
+            $builder->orderBy('RIM', 'DESC');
+            $data = $builder->get()->getResultArray();
+            // $data = $this->pcs->table($this->table)->select('RIM')->groupBy('RIM')->get()->getResultArray();
+        } else {
+            $sqlweek = "";
+            $sqlbulan = "AND MONTH(CMV_CONSIGNMENT_DATETIME) = '" . $bulan . "'";
+            $sqlbrand = "";
+            $sqlrim = "";
+
+            if ($week != 0) {
+                $sqlweek = "AND ((DATEPART(day, CMV_CONSIGNMENT_DATETIME) -1) / 7) + 1 = '" . $week . "'";
+            }
+
+            if ($brand != null) {
+                $sqlbrand = "AND CS.CST_DESC = '" . strtoupper($brand) . "'";
+            }
+
+            if ($rim != null) {
+                $sqlrim = "AND RM.MD_PPA_VALUE = '" . $rim . "'";
+            }
+
+
+
+
+            $sql = "SELECT
+                        RM.MD_PPA_VALUE AS RIM
+                    FROM
+                    (SELECT 
+                        CNT_CODE,
+                        MAT_VARIANT,
+                        MAT_SAP_CODE,
+                        MAT_PART_CLASS,
+                        COST_CENTER,
+                        PALLET_TYPE_CODE,
+                            CMV_BARCODE,
+                            CMV_CREATE_DATETIME,
+                            CMV_READ1_DATETIME,
+                            CMV_READ2_DATETIME,
+                            CMV_CONSIGNMENT_DATETIME,
+                            CMV_CONSIGNMENT_FLAG,
+                            CMV_PALLET_QTY 
+                            
+                            FROM CMS_MOVEMENTS 
+                            UNION ALL
+                            SELECT 
+                            CNT_CODE,
+                        MAT_VARIANT,
+                        MAT_SAP_CODE,
+                        MAT_PART_CLASS,
+                        COST_CENTER,
+                        PALLET_TYPE_CODE,
+                            CMV_BARCODE,
+                            CMV_CREATE_DATETIME,
+                            CMV_READ1_DATETIME,
+                            CMV_READ2_DATETIME,
+                            CMV_CONSIGNMENT_DATETIME,
+                            CMV_CONSIGNMENT_FLAG,
+                            CMV_PALLET_QTY 
+                            
+                            FROM HIS_CMS_MOVEMENTS
+                        ) AS MOV
+                        JOIN MD_MATERIALS AS MAT ON MOV.MAT_SAP_CODE = MAT.MAT_SAP_CODE
+                        AND MOV.CNT_CODE = MAT.CNT_CODE
+                        AND MOV.MAT_VARIANT = MAT.MAT_VARIANT
+                        JOIN CMS_MATERIALS AS CMT ON CMT.MAT_SAP_CODE = MOV.MAT_SAP_CODE
+                        AND CMT.MAT_VARIANT = MOV.MAT_VARIANT
+                        AND CMT.CNT_CODE = MOV.CNT_CODE
+                        AND CMT.MAT_PART_CLASS = MOV.MAT_PART_CLASS
+                        AND CMT.COST_CENTER = MOV.COST_CENTER
+                        AND CMT.PALLET_TYPE_CODE = MOV.PALLET_TYPE_CODE
+                        JOIN (
+                            SELECT
+                                SFC_CODE,
+                                SFS_SUBCODE,
+                                SFS_DESC
+                            FROM
+                                MD_SEMI_FINISHED_SUBCLASSES
+                            WHERE
+                                (
+                                    SFS_PLANT_CODE = null
+                                    OR null = ''
+                                    OR null IS NULL
+                                )
+                                OR SFS_PLANT_CODE IS NULL
+                                OR SFS_PLANT_CODE = ''
+                        ) SFS ON SFS.SFC_CODE = MAT.SFC_CODE
+                        AND SFS.SFS_SUBCODE = MAT.SFS_SUBCODE 
+                        --and convert(date,CMV_CONSIGNMENT_DATETIME) >='2023-05-02 00:00:00.000' and  convert(date,CMV_CONSIGNMENT_DATETIME) <'2023-05-06 00:00:00.000'
+                        JOIN MD_PROCESS_PARAMETERS_ACYCLE_VALUE AS RM ON RM.MAT_SAP_CODE = MOV.MAT_SAP_CODE
+                        AND ST_CODE = 801
+                        JOIN WMS_CUSTOMERS AS CS ON CS.CST_CODE = CMT.CST_CODE -- biar cari yang NOT NULL
+                    WHERE 1 = 1
+                        --CMV_CONSIGNMENT_DATETIME IS NOT NULL 
+                        " . $sqlbrand . "
+                        " . $sqlweek . "
+                        " . $sqlbulan . "
+                        " . $sqlrim . "
+                    GROUP BY RM.MD_PPA_VALUE
+                    ORDER BY
+                    RM.MD_PPA_VALUE DESC
+            ";
+            $data = $this->pcs->query($sql)->getResultArray();
+        }
+
+        return $data;
+    }
 }

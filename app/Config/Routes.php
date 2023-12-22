@@ -154,3 +154,8 @@ $routes->get('laporan/inbound_detail_export', '\App\Controllers\Laporan::exportI
 
 $routes->get('laporan/inbound_chart', '\App\Controllers\Laporan::inboundChart');
 $routes->get('laporan/inbound_chart_ajax', '\App\Controllers\Laporan::ajaxInboundChart');
+
+
+$routes->get('laporan/inbound_rim', '\App\Controllers\Laporan::inboundRim');
+$routes->get('laporan/inbound_rim_ajax', '\App\Controllers\Laporan::ajaxInboundRim');
+$routes->get('laporan/inbound_rim_export', '\App\Controllers\Laporan::exportInboundRim');

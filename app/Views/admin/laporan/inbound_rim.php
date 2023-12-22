@@ -40,7 +40,7 @@
             <div class="card">
 
                 <div class="card-body">
-                    <form action="" method="get" class="noprint">
+                    <form action="" method="get">
                         <div class="row mt-3">
                             <div class="col-md-2">
                                 <div class="mb-2">
@@ -57,20 +57,13 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
                                 <button type="button" id="submit" class="btn btn-primary">Submit</button>
-                                <?php if (hasPermissions('inbound_detail')) : ?>
+                                <?php if (hasPermissions('inbound_rim_detail')) : ?>
                                     <button type="button" id="detail" class="btn btn-info">Detail</button>
                                 <?php endif; ?>
-                                <?php if (hasPermissions('inbound_chart')) : ?>
-                                    <button type="button" id="chart" class="btn btn-warning">Chart</button>
-                                <?php endif; ?>
-
-                                <?php if (hasPermissions('inbound_rim')) : ?>
-                                    <button type="button" id="rim" class="btn btn-secondary">RIM</button>
-                                <?php endif; ?>
-                                <?php if (hasPermissions('inbound_list_export')) : ?>
+                                <?php if (hasPermissions('inbound_rim_export')) : ?>
                                     <button type="button" id="export" class="btn btn-success">Export</button>
                                 <?php endif; ?>
                             </div>
@@ -78,9 +71,9 @@
                     </form>
 
 
-                    <div class="row mt-1">
-                        <div class="col table-responsive" id="area_lod">
-                            <?= $this->include('admin/laporan/inbound_list_ajax'); ?>
+                    <div class="row">
+                        <div class="col" id="area_lod">
+                            <?= $this->include('admin/laporan/inbound_rim_ajax'); ?>
                         </div>
                     </div>
                 </div>
@@ -113,26 +106,13 @@
 <script>
     $('#export').on('click', function() {
         var bulan = $('#bulan').val();
-        var link = '<?= base_url(); ?>laporan/inbound_export?bulan=' + bulan;
-        window.open(link, '_blank');
-    })
-
-    $('#chart').on('click', function() {
-        var bulan = $('#bulan').val();
-        var link = '<?= base_url(); ?>laporan/inbound_chart?bulan=' + bulan;
+        var link = '<?= base_url(); ?>laporan/inbound_rim_export?bulan=' + bulan;
         window.open(link, '_blank');
     })
 
     $('#detail').on('click', function() {
         var bulan = $('#bulan').val();
-        var link = '<?= base_url(); ?>laporan/inbound_detail?bulan=' + bulan;
-        window.open(link, '_blank');
-    })
-
-
-    $('#rim').on('click', function() {
-        var bulan = $('#bulan').val();
-        var link = '<?= base_url(); ?>laporan/inbound_rim?bulan=' + bulan;
+        var link = '<?= base_url(); ?>laporan/inbound_rim_detail?bulan=' + bulan;
         window.open(link, '_blank');
     })
 
@@ -145,7 +125,7 @@
         loading('area_lod');
 
         $.ajax({
-            url: '<?= base_url(); ?>laporan/inbound_ajax',
+            url: '<?= base_url(); ?>laporan/inbound_rim_ajax',
             method: 'GET', // POST
             data: {
                 bulan: bulan,

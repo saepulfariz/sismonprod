@@ -280,6 +280,15 @@ class SeedPermissions extends Seeder
                 'title'    => 'Laporan Inbound Chart',
                 'code'    => 'inbound_detail_chart',
             ],
+
+            [
+                'title'    => 'Laporan Inbound Rim',
+                'code'    => 'inbound_rim',
+            ],
+            [
+                'title'    => 'Laporan Inbound Rim Export',
+                'code'    => 'inbound_rim_export',
+            ],
         ];
 
         $this->db->table('permissions')->insertBatch($data);
