@@ -215,7 +215,7 @@
         <?php if ($hasInboundRim || $hasInboundList || $hasChartCuring || $hasChartBuilding || $hasTableBuilding) : ?>
           <li class="sidebar-item  has-sub <?= (@$_page->menu == 'laporan') ? 'active' : '' ?>">
             <a href="#" class='sidebar-link'>
-              <i class="fas fa-cog"></i>
+              <i class="bi bi-grid-fill"></i>
               <span>Laporan</span>
             </a>
 
