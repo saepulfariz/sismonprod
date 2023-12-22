@@ -1950,4 +1950,354 @@ class Laporan extends AdminBaseController
 
         exit;
     }
+
+    public function inboundRimDetail()
+    {
+        $this->permissionCheck('inbound_rim_detail');
+        $this->updatePageData([
+            'title' => 'Laporan Inbound Rim Detail',
+            'submenu' => 'inbound_rim',
+        ]);
+
+        $bulan = ($this->request->getVar('bulan')) ? $this->request->getVar('bulan') : intval(date('m'));
+        $tahun = ($this->request->getVar('tahun')) ? $this->request->getVar('tahun') : intval(date('Y'));
+        $date1 = $tahun . '-' . $bulan . '-' . '01';
+        // 👇 get the timestamp of the date
+        $date = strtotime($date1);
+        // $date = strtotime("2nd January 2022");
+
+        // 👇 get the last date for that month
+        $last_date = date("Y-m-t", $date);
+
+        // print $last_date; // 2022-01-31
+
+        $range_date = getDatesFromRange($date1, $last_date);
+        $data_end_range = end($range_date);
+
+        if ($last_date != $data_end_range) {
+            $range_date[] = $last_date;
+        }
+        // dd($range_date);
+        $data = [
+            'title' => 'Rim Detail',
+            'tahun' => $tahun,
+            'rim_list' => $this->modelpcs->getDataInboundRimList($tahun, $bulan, 0),
+            'range_date' => $range_date,
+            'id_bulan' => $bulan,
+            'bulan' => date('F', strtotime(date('Y-' . $bulan . '-d')))
+        ];
+
+
+        return view($this->view . '/inbound_rim_detail', $data);
+    }
+
+    public function ajaxInboundRimDetail()
+    {
+        $this->permissionCheck('inbound_rim_detail');
+        $this->updatePageData([
+            'title' => 'Laporan Inbound Rim Detail',
+            'submenu' => 'inbound_rim',
+        ]);
+
+        $bulan = ($this->request->getVar('bulan')) ? $this->request->getVar('bulan') : intval(date('m'));
+        $tahun = ($this->request->getVar('tahun')) ? $this->request->getVar('tahun') : intval(date('Y'));
+        $date1 = $tahun . '-' . $bulan . '-' . '01';
+        // 👇 get the timestamp of the date
+        $date = strtotime($date1);
+        // $date = strtotime("2nd January 2022");
+
+        // 👇 get the last date for that month
+        $last_date = date("Y-m-t", $date);
+
+        // print $last_date; // 2022-01-31
+
+        $range_date = getDatesFromRange($date1, $last_date);
+        $data_end_range = end($range_date);
+
+        if ($last_date != $data_end_range) {
+            $range_date[] = $last_date;
+        }
+        // dd($range_date);
+        $data = [
+            'title' => 'Rim Detail',
+            'tahun' => $tahun,
+            'rim_list' => $this->modelpcs->getDataInboundRimList($tahun, $bulan, 0),
+            'range_date' => $range_date,
+            'id_bulan' => $bulan,
+            'bulan' => date('F', strtotime(date('Y-' . $bulan . '-d')))
+        ];
+
+
+
+        return view($this->view . '/inbound_rim_detail_ajax', $data);
+    }
+
+    public function exportInboundRimDetail()
+    {
+        $this->permissionCheck('inbound_rim_detail_export');
+        $bulan = ($this->request->getVar('bulan')) ? $this->request->getVar('bulan') : intval(date('m'));
+        $tahun = ($this->request->getVar('tahun')) ? $this->request->getVar('tahun') : intval(date('Y'));
+        $date1 = $tahun . '-' . $bulan . '-' . '01';
+        // 👇 get the timestamp of the date
+        $date = strtotime($date1);
+        // $date = strtotime("2nd January 2022");
+
+        // 👇 get the last date for that month
+        $last_date = date("Y-m-t", $date);
+
+        // print $last_date; // 2022-01-31
+
+        $range_date = getDatesFromRange($date1, $last_date);
+        $data_end_range = end($range_date);
+
+        if ($last_date != $data_end_range) {
+            $range_date[] = $last_date;
+        }
+        // dd($range_date);
+        $data = [
+            'title' => 'Rim Detail',
+            'tahun' => $tahun,
+            'rim_list' => $this->modelpcs->getDataInboundRimList($tahun, $bulan, 0),
+            'range_date' => $range_date,
+            'id_bulan' => $bulan,
+            'bulan' => date('F', strtotime(date('Y-' . $bulan . '-d')))
+        ];
+
+        // phpoffice/phpspreadsheet
+        $spreadsheet = new Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setTitle("Performance SUBANG - " . $data['bulan'] . ' ' . $tahun);
+
+        $rowLabel = 1;
+
+        // $sheet->setCellValue('A2', 'Handover:');
+        // $sheet->setCellValue('B2', '');
+
+        // $sheet->setCellValue('D2', 'Export:');
+        // $sheet->setCellValue('E2', date('Y-m-d H:i:s'));
+
+        $lineFreeze = 2;
+
+        // $sheet->freezePane('A' . $lineFreeze);
+        // // Freeze second line:
+        // $sheet->freezePane('E' . $lineFreeze);
+
+        // set bold
+        $sheet->getStyle('A' . $rowLabel . ':N' . $rowLabel . '')->getFont()->setBold(true);
+
+        // set wrap text
+        $sheet->getStyle('A' . $rowLabel . ':N' . $rowLabel . '')->getAlignment()->setWrapText(true);
+
+        //  biar gak dempet karena autosize
+
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setAutoSize(true);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
+        $sheet->getColumnDimension('G')->setAutoSize(true);
+        $sheet->getColumnDimension('H')->setAutoSize(true);
+        $sheet->getColumnDimension('I')->setAutoSize(true);
+        $sheet->getColumnDimension('J')->setAutoSize(true);
+        $sheet->getColumnDimension('K')->setAutoSize(true);
+        $sheet->getColumnDimension('L')->setAutoSize(true);
+        $sheet->getColumnDimension('M')->setAutoSize(true);
+        $sheet->getColumnDimension('N')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->mergeCells("A1:B2");
+
+        $sheet->setCellValue('A' . $rowLabel, 'SUBANG');
+        $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setVertical('center');
+        $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal('center');
+        $sheet->setCellValue('C' . $rowLabel, $data['bulan'] . ' ' . $tahun);
+        $spreadsheet->getActiveSheet()->getStyle('C1')->getAlignment()->setHorizontal('center');
+        $rowWeek = $rowLabel + 1;
+
+        $abjad = [
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+            'J',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z',
+            'AA',
+            'AB',
+            'AC',
+            'AD',
+            'AE',
+            'AF',
+            'AG',
+            'AH',
+            'AI',
+            'AJ',
+            'AK',
+            'AL',
+            'AM',
+            'AN',
+            'AO',
+            'AP',
+            'AQ',
+            'AR',
+            'AS',
+            'AT',
+            'AU',
+            'AV',
+            'AW',
+            'AX',
+            'AY',
+            'AZ',
+        ];
+        $startDate = 'C';
+
+        // CREATE DATE
+        $in = 2;
+        $abjadStart = $abjad[$in];
+        foreach ($range_date as $d) {
+            $sheet->setCellValue($abjad[$in] . $rowWeek, date('d', strtotime($d)));
+            $abjadEnd = $abjad[$in];
+            $in++;
+        }
+
+        $spreadsheet->getActiveSheet()->mergeCells($abjadStart . "1:" . $abjad[$in] . "1");
+
+        $sheet->setCellValue($abjad[$in] . $rowWeek, 'ACT');
+
+        $no_plan = 3;
+        $no_act = 4;
+        $no_persen = 5;
+        $total_plan = 0;
+        $total_act = 0;
+        foreach ($data['rim_list'] as $d) {
+
+            // total
+            $spreadsheet->getActiveSheet()->mergeCells("A" . $no_plan . ":A" . $no_persen);
+            $spreadsheet->getActiveSheet()->getStyle('A' . $no_plan)->getAlignment()->setVertical('center');
+            $sheet->setCellValue('A' . $no_plan, $d['RIM']);
+            $sheet->setCellValue('B' . $no_plan, 'Plan');
+
+            $in = 2;
+            $rowWeek = $no_plan;
+            $abjadStart = $abjad[$in];
+            $plan = [];
+            $a = 0;
+            foreach ($range_date as $date) {
+                $res = $this->modelinbound->getDataInbound(tahun: date('Y', strtotime($date)), bulan: date('m', strtotime($date)), date: $date, rim: $d['RIM'])['INBOUND'];
+                $plan[$a] = (is_null($res)) ? 0 : $res;
+                $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+                $abjadEnd = $abjad[$in];
+                $a++;
+                $in++;
+            }
+
+            $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($plan));
+
+            $sheet->setCellValue('B' . $no_act, 'ACT');
+
+            $in = 2;
+            $rowWeek = $no_act;
+            $abjadStart = $abjad[$in];
+            $actual = [];
+            $a = 0;
+            foreach ($range_date as $date) {
+                $res = $this->modelpcs->getDataInbound(tahun: date('Y', strtotime($date)), bulan: date('m', strtotime($date)), date: $date, rim: $d['RIM'])['INBOUND'];
+                $actual[$a] = (is_null($res)) ? 0 : $res;
+                $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+                $abjadEnd = $abjad[$in];
+                $a++;
+                $in++;
+            }
+
+            $sheet->setCellValue($abjad[$in] . $rowWeek, array_sum($actual));
+
+            $sheet->setCellValue('B' . $no_persen, '%');
+
+            $in = 2;
+            $rowWeek = $no_persen;
+            $abjadStart = $abjad[$in];
+            $a = 0;
+            foreach ($range_date as $d) {
+                $res = ($plan[$a] == 0 || $actual[$a] == 0) ? '' : round(($actual[$a] / $plan[$a] * 100), 1);
+                $sheet->setCellValue($abjad[$in] . $rowWeek, (is_null($res)) ? '' : $res);
+                $abjadEnd = $abjad[$in];
+                $a++;
+                $in++;
+            }
+
+
+            $sheet->setCellValue($abjad[$in] . $rowWeek, (array_sum($plan) == 0 || array_sum($actual) == 0) ? '' : round(array_sum($actual) / array_sum($plan) * 100, 1));
+
+            $no_plan += 3;
+            $no_act += 3;
+            $no_persen += 3;
+            $total_plan += array_sum($plan);
+            $total_act += array_sum($actual);
+        }
+
+
+        $sheet->setCellValue($abjadStart . $no_plan, 'TOTAL PLAN :');
+        $sheet->setCellValue($abjad[$in] . $no_plan, $total_plan);
+
+        $spreadsheet->getActiveSheet()->mergeCells($abjadStart . $no_plan . ":" . $abjad[$in - 1] . $no_plan);
+        $spreadsheet->getActiveSheet()->getStyle('C' . $no_plan)->getAlignment()->setHorizontal('right');
+
+        $sheet->setCellValue($abjadStart . $no_act, 'TOTAL ACT :');
+        $sheet->setCellValue($abjad[$in] . $no_act, $total_act);
+
+        $spreadsheet->getActiveSheet()->mergeCells($abjadStart . $no_act . ":" . $abjad[$in - 1] . $no_act);
+        $spreadsheet->getActiveSheet()->getStyle('C' . $no_act)->getAlignment()->setHorizontal('right');
+
+        $sheet->setCellValue($abjadStart . $no_persen, 'PERCENTAGE :');
+        $sheet->setCellValue($abjad[$in] . $no_persen, ($total_act == 0 || $total_plan == 0) ? 0 : round($total_act / $total_plan * 100, 1));
+
+        $spreadsheet->getActiveSheet()->mergeCells($abjadStart . $no_persen . ":" . $abjad[$in - 1] . $no_persen);
+        $spreadsheet->getActiveSheet()->getStyle('C' . $no_persen)->getAlignment()->setHorizontal('right');
+
+        $file_name = 'Performance SUBANG RIM Detail- ' . $data['bulan'] . ' ' . $tahun . '.xlsx';
+
+
+        $writer = new Xlsx($spreadsheet);
+
+        $writer->save($file_name);
+
+        header("Content-Type: application/vnd.ms-excel");
+
+        header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
+
+        header('Expires: 0');
+
+        header('Cache-Control: must-revalidate');
+
+        header('Pragma: public');
+
+        header('Content-Length:' . filesize($file_name));
+
+        flush();
+
+        readfile($file_name);
+        @unlink($file_name);
+
+        exit;
+    }
 }

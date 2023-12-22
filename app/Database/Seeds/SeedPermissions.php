@@ -289,6 +289,15 @@ class SeedPermissions extends Seeder
                 'title'    => 'Laporan Inbound Rim Export',
                 'code'    => 'inbound_rim_export',
             ],
+
+            [
+                'title'    => 'Laporan Inbound Rim Detail',
+                'code'    => 'inbound_rim_detail',
+            ],
+            [
+                'title'    => 'Laporan Inbound Rim Detail Export',
+                'code'    => 'inbound_rim_detail_export',
+            ],
         ];
 
         $this->db->table('permissions')->insertBatch($data);
