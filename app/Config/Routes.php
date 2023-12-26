@@ -68,6 +68,8 @@ $routes->post('/change-password', '\App\Controllers\Auth::updateChangePassword')
 $routes->get('/logout', '\App\Controllers\Auth::logout');
 
 $routes->get('/dashboard', '\App\Controllers\Dashboard::index', []);
+$routes->get('/dashboard/ajax_total', '\App\Controllers\Dashboard::ajaxTotalDashboard', []);
+
 $routes->get('/backup', '\App\Controllers\Backup::index');
 $routes->get('/backup/exportDB', '\App\Controllers\Backup::exportDB');
 

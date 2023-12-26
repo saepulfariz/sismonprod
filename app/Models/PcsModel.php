@@ -472,6 +472,92 @@ class PcsModel extends Model
         return $new_data;
     }
 
+    function getDataCuringDate($start, $end)
+    {
+        $start = ($start == null) ? date('Y-m-d') : $start;
+        $end = ($end == null) ? date('Y-m-d') : $end;
+        $sql = "SELECT SUM(PS_QUANTITY) as jumlah
+                FROM [PCS].[dbo].[DC_PRODUCTION_DATA] WHERE PP_CODE = 'V01' AND CONVERT(date, PS_DATE) >= '" . $start . "' 
+                AND CONVERT(date, PS_DATE) <= '" . $end . "'";
+        return $this->pcs->query($sql)->getRowArray();
+    }
+
+    function getDataInboundDate($start, $end)
+    {
+        $start = ($start == null) ? date('Y-m-d') : $start;
+        $end = ($end == null) ? date('Y-m-d') : $end;
+        $sql = "SELECT
+        SUM(CMV_PALLET_QTY) AS jumlah
+        FROM (SELECT 
+        CNT_CODE,
+        MAT_VARIANT,
+        MAT_SAP_CODE,
+        MAT_PART_CLASS,
+        COST_CENTER,
+        PALLET_TYPE_CODE,
+            CMV_BARCODE,
+            CMV_CREATE_DATETIME,
+            CMV_READ1_DATETIME,
+            CMV_READ2_DATETIME,
+            CMV_CONSIGNMENT_DATETIME,
+            CMV_CONSIGNMENT_FLAG,
+            CMV_PALLET_QTY 
+            
+            FROM CMS_MOVEMENTS 
+            UNION ALL
+            SELECT 
+            CNT_CODE,
+        MAT_VARIANT,
+        MAT_SAP_CODE,
+        MAT_PART_CLASS,
+        COST_CENTER,
+        PALLET_TYPE_CODE,
+            CMV_BARCODE,
+            CMV_CREATE_DATETIME,
+            CMV_READ1_DATETIME,
+            CMV_READ2_DATETIME,
+            CMV_CONSIGNMENT_DATETIME,
+            CMV_CONSIGNMENT_FLAG,
+            CMV_PALLET_QTY 
+            
+            FROM HIS_CMS_MOVEMENTS
+        ) AS MOV
+        JOIN MD_MATERIALS AS MAT ON MOV.MAT_SAP_CODE = MAT.MAT_SAP_CODE
+        AND MOV.CNT_CODE = MAT.CNT_CODE
+        AND MOV.MAT_VARIANT = MAT.MAT_VARIANT
+        JOIN CMS_MATERIALS AS CMT ON CMT.MAT_SAP_CODE = MOV.MAT_SAP_CODE
+        AND CMT.MAT_VARIANT = MOV.MAT_VARIANT
+        AND CMT.CNT_CODE = MOV.CNT_CODE
+        AND CMT.MAT_PART_CLASS = MOV.MAT_PART_CLASS
+        AND CMT.COST_CENTER = MOV.COST_CENTER
+        AND CMT.PALLET_TYPE_CODE = MOV.PALLET_TYPE_CODE
+        JOIN (
+            SELECT
+                SFC_CODE,
+                SFS_SUBCODE,
+                SFS_DESC
+            FROM
+                MD_SEMI_FINISHED_SUBCLASSES
+            WHERE
+                (
+                    SFS_PLANT_CODE = null
+                    OR null = ''
+                    OR null IS NULL
+                )
+                OR SFS_PLANT_CODE IS NULL
+                OR SFS_PLANT_CODE = ''
+        ) SFS ON SFS.SFC_CODE = MAT.SFC_CODE
+        AND SFS.SFS_SUBCODE = MAT.SFS_SUBCODE 
+        --and convert(date,CMV_CONSIGNMENT_DATETIME) >='2023-05-02 00:00:00.000' and  convert(date,CMV_CONSIGNMENT_DATETIME) <'2023-05-06 00:00:00.000'
+        JOIN MD_PROCESS_PARAMETERS_ACYCLE_VALUE AS RM ON RM.MAT_SAP_CODE = MOV.MAT_SAP_CODE
+        AND ST_CODE = 801
+        JOIN WMS_CUSTOMERS AS CS ON CS.CST_CODE = CMT.CST_CODE -- biar cari yang NOT NULL
+        WHERE 1 = 1 
+        AND convert(date,CMV_CONSIGNMENT_DATETIME) >= '" . $start . "'
+        AND convert(date,CMV_CONSIGNMENT_DATETIME) <= '" . $end . "'";
+        return $this->pcs->query($sql)->getRowArray();
+    }
+
     public function getDataInbound($tahun = null, $bulan = 1, $week = 0, $brand = null, $rim = null,  $cost_center = null, $mch_type = null, $date = null, $get = null)
     {
 
