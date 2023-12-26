@@ -128,6 +128,7 @@
     var start = $('#start').val();
     var end = $('#end').val();
     var now = '<?= date('Y-m-d'); ?>';
+    $('#submit-total').html('Loading');
 
     $.ajax({
       url: "<?= base_url('dashboard/ajax_total'); ?>",
@@ -138,6 +139,7 @@
       },
       dataType: "JSON",
       success: function(result) {
+        $('#submit-total').html('Submit');
         if (start == now && end == now) {
           $('.today').html('Today');
         } else {
