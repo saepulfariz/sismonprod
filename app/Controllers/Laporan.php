@@ -18,11 +18,13 @@ class Laporan extends AdminBaseController
     private $dir = '';
     private $modelpcs;
     private $modelinbound;
+    private $modelcuring;
 
     public function __construct()
     {
         $this->model = new \App\Models\PlannedMaterialModel();
         $this->modelinbound = new \App\Models\PlannedInboundModel();
+        $this->modelcuring = new \App\Models\PlannedCuringModel();
         $this->modelpcs = new \App\Models\PcsModel();
     }
 
@@ -119,6 +121,7 @@ class Laporan extends AdminBaseController
             'curing' => $curing,
             'id_bulan' => $bulan,
             'tahun' => $tahun,
+            'list_tahun' => $this->modelcuring->select('YEAR(p_date) as tahun')->groupBy('YEAR(p_date)')->findAll(),
             'link' => 'dashboard/curing',
             'sbtu' => [
                 'act' => $sbtu_act,

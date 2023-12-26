@@ -57,8 +57,20 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-2">
+                                <div class="mb-2">
+                                    <select name="tahun" id="tahun" class="form-control">
+                                        <?php foreach ($list_tahun as $d) : ?>
+                                            <?php if ($d['tahun'] == $tahun) : ?>
+                                                <option selected><?= $d['tahun']; ?></option>
+                                            <?php else : ?>
+                                                <option><?= $d['tahun']; ?></option>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-6">
-                                <input type="hidden" id="tahun" name="tahun" value="<?= $tahun; ?>">
                                 <input type="hidden" id="mch" name="mch" value="MRU1">
                                 <input type="hidden" id="ip" name="ip" value="37779">
                                 <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
