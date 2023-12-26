@@ -23,13 +23,13 @@
       <div class="col-md-3">
         <div class="input-group mb-3">
           <span class="input-group-text">Start</span>
-          <input type="date" id="start" name="start" class="form-control" value="<?= $start; ?>" placeholder="Start">
+          <input type="date" id="start_total" name="start_total" class="form-control" value="<?= $start_total; ?>" placeholder="Start">
         </div>
       </div>
       <div class="col-md-3">
         <div class="input-group mb-3">
           <span class="input-group-text">End</span>
-          <input type="date" id="end" name="end" class="form-control" value="<?= $end; ?>" placeholder="End">
+          <input type="date" id="end_total" name="end_total" class="form-control" value="<?= $end_total; ?>" placeholder="End">
         </div>
       </div>
       <div class="col-md-3">
@@ -112,6 +112,35 @@
 
   <div class="col-12 col-lg-10">
     <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h3>Production Building Daily</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Start</span>
+                  <input type="date" id="start_chart" name="start_chart" class="form-control" value="<?= $start_chart; ?>" placeholder="Start">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="input-group mb-3">
+                  <span class="input-group-text">End</span>
+                  <input type="date" id="end_chart" name="end_chart" class="form-control" value="<?= $end_chart; ?>" placeholder="End">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <button type="button" id="submit-chart" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+            <div class="row">
+              <canvas id="chart-daily"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -125,8 +154,8 @@
 
 <script>
   function ajaxTotalDashboard() {
-    var start = $('#start').val();
-    var end = $('#end').val();
+    var start = $('#start_total').val();
+    var end = $('#end_total').val();
     var now = '<?= date('Y-m-d'); ?>';
     $('#submit-total').html('Loading');
 
@@ -155,5 +184,55 @@
   }
 
   $('#submit-total').on('click', ajaxTotalDashboard);
+
+  var ctx1 = $("#chart-daily").get(0).getContext("2d");
+  var myChart1 = new Chart(ctx1, {
+    type: "bar",
+    data: {
+      labels: <?= json_encode($chart['label']); ?>,
+      datasets: [{
+        label: "Act Building",
+        data: <?= json_encode($chart['data']); ?>,
+        backgroundColor: "rgb(57,80,162)"
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+
+
+
+  function addData(chart, data, datasetIndex) {
+
+    chart.data.labels = data.label;
+    chart.data.datasets[0].data = data.data;
+
+    chart.update();
+
+  }
+
+  function ajaxChart() {
+    var start = $('#start_chart').val();
+    var end = $('#end_chart').val();
+    var now = '<?= date('Y-m-d'); ?>';
+    $('#submit-chart').html('Loading');
+
+    $.ajax({
+      url: "<?= base_url('dashboard/ajax_chart'); ?>",
+      method: "GET",
+      data: {
+        start: start,
+        end: end,
+      },
+      dataType: "JSON",
+      success: function(result) {
+        $('#submit-chart').html('Submit');
+        addData(myChart1, result, 0);
+      }
+    });
+  }
+
+  $('#submit-chart').on('click', ajaxChart);
 </script>
 <?= $this->endSection('script') ?>

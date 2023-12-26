@@ -472,6 +472,29 @@ class PcsModel extends Model
         return $new_data;
     }
 
+    function getChartBuildingDate($start, $end)
+    {
+        $start = ($start == null) ? date('Y-m-d') : $start;
+        $end = ($end == null) ? date('Y-m-d') : $end;
+        $sql = "  SELECT CONVERT(date, PS_DATE) as DATE, SUM(PS_QUANTITY) as JUMLAH FROM [PCS].[dbo].[DC_PRODUCTION_DATA]
+        WHERE PS_DATE >= '" . $start . "'
+        AND PS_DATE <= '" . $end . "'
+        AND PP_CODE = 'B02'
+        GROUP BY PS_DATE ORDER BY PS_DATE ASC";
+        $data = $this->pcs->query($sql)->getResultArray();
+
+        $label = [];
+        $count = [];
+        foreach ($data as $val) {
+            $label[] = $val['DATE'];
+            $count[] = $val['JUMLAH'];
+        }
+
+        $res['label'] = $label;
+        $res['data'] = $count;
+        return $res;
+    }
+
     function getDataCuringDate($start, $end)
     {
         $start = ($start == null) ? date('Y-m-d') : $start;
