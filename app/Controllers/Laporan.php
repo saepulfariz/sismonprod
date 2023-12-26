@@ -197,6 +197,7 @@ class Laporan extends AdminBaseController
         $data = [
             'title' => 'Report',
             'tahun' => $tahun,
+            'list_tahun' => $this->modelinbound->select('YEAR(p_date) as tahun')->groupBy('YEAR(p_date)')->findAll(),
             // 'rim_list' => $this->modelpcs->getRimList($tahun, $bulan, 0),
             'total_week1' => $this->modelpcs->getDataInbound($tahun, $bulan, $week1),
             'total_week2' => $this->modelpcs->getDataInbound($tahun, $bulan, $week2),
@@ -746,6 +747,7 @@ class Laporan extends AdminBaseController
         $data = [
             'title' => 'Dashboard Detail',
             'tahun' => $tahun,
+            'list_tahun' => $this->modelinbound->select('YEAR(p_date) as tahun')->groupBy('YEAR(p_date)')->findAll(),
             'range_date' => $range_date,
             'id_bulan' => $bulan,
             'bulan' => date('F', strtotime(date('Y-' . $bulan . '-d')))
@@ -1719,6 +1721,7 @@ class Laporan extends AdminBaseController
                 'data'  => $json,
                 'bulan' => $data['bulan'],
                 'tahun' => $tahun,
+                'list_tahun' => $this->modelinbound->select('YEAR(p_date) as tahun')->groupBy('YEAR(p_date)')->findAll(),
             ];
         }
 
@@ -1757,6 +1760,7 @@ class Laporan extends AdminBaseController
         $data = [
             'title' => 'Rim',
             'tahun' => $tahun,
+            'list_tahun' => $this->modelinbound->select('YEAR(p_date) as tahun')->groupBy('YEAR(p_date)')->findAll(),
             'rim_list' => $this->modelpcs->getDataInboundRimList($tahun, $bulan, 0),
 
             'id_bulan' => $bulan,
@@ -1984,6 +1988,7 @@ class Laporan extends AdminBaseController
         $data = [
             'title' => 'Rim Detail',
             'tahun' => $tahun,
+            'list_tahun' => $this->modelinbound->select('YEAR(p_date) as tahun')->groupBy('YEAR(p_date)')->findAll(),
             'rim_list' => $this->modelpcs->getDataInboundRimList($tahun, $bulan, 0),
             'range_date' => $range_date,
             'id_bulan' => $bulan,

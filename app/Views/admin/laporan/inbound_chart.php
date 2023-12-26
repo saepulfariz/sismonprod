@@ -58,6 +58,19 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-2">
+                                    <div class="mb-2">
+                                        <select name="tahun" id="tahun" class="form-control">
+                                            <?php foreach ($list_tahun as $d) : ?>
+                                                <?php if ($d['tahun'] == $tahun) : ?>
+                                                    <option selected><?= $d['tahun']; ?></option>
+                                                <?php else : ?>
+                                                    <option><?= $d['tahun']; ?></option>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-md-4">
                                     <button type="button" id="submit" class="btn btn-primary">Submit</button>
                                     <button type="button" id="png" class="btn btn-success">Download</button>
@@ -249,7 +262,7 @@
             method: 'GET', // POST
             data: {
                 bulan: bulan,
-                // tahun: tahun,
+                tahun: tahun,
             },
             dataType: 'json', // json
             success: function(data) {

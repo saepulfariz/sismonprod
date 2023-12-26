@@ -40,7 +40,7 @@
             <div class="card">
 
                 <div class="card-body">
-                    <form action="" method="get" class="noprint">
+                    <form action="" method="get" class="noprint" id="form-export">
                         <div class="row mt-3">
                             <div class="col-md-2">
                                 <div class="mb-2">
@@ -54,6 +54,19 @@
 
                                             <?php endif; ?>
                                         <?php endfor; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="mb-2">
+                                    <select name="tahun" id="tahun" class="form-control">
+                                        <?php foreach ($list_tahun as $d) : ?>
+                                            <?php if ($d['tahun'] == $tahun) : ?>
+                                                <option selected><?= $d['tahun']; ?></option>
+                                            <?php else : ?>
+                                                <option><?= $d['tahun']; ?></option>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                             </div>
@@ -102,10 +115,12 @@
 <?= $this->section('script') ?>
 <script>
     $('#export').on('click', function() {
-        var bulan = $('#bulan').val();
-        var link = '<?= base_url(); ?>laporan/inbound_detail_export?bulan=' + bulan;
-        // console.log(link);
-        window.open(link, '_blank');
+        // var bulan = $('#bulan').val();
+        // var link = '<?= base_url(); ?>laporan/inbound_detail_export?bulan=' + bulan;
+        // // console.log(link);
+        // window.open(link, '_blank');
+        var str = $("form#form-export").serialize();
+        window.open('<?= base_url(); ?>laporan/inbound_detail_export?' + str);
     })
 
     $('#submit').on('click', function() {
@@ -121,7 +136,7 @@
             method: 'GET', // POST
             data: {
                 bulan: bulan,
-                // tahun: tahun,
+                tahun: tahun,
             },
             dataType: 'html', // json
             success: function(data) {
