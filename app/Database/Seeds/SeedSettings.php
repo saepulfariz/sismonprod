@@ -11,7 +11,7 @@ class SeedSettings extends Seeder
         $data = [
             [
                 'key'    => 'company_name',
-                'value' => 'SaeApp',
+                'value' => 'SisMonProd',
                 'created_at' => '2023-10-16 20:00:00.000',
                 'updated_at' => '2023-10-16 20:00:00.000',
             ],

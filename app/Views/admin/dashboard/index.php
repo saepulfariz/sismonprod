@@ -43,7 +43,8 @@
             <div class="row">
               <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
                 <div class="stats-icon blue mb-2">
-                  <i class="iconly-boldProfile"></i>
+                  <!-- <i class="iconly-boldProfile"></i> -->
+                  <i class="fas fa-clipboard-list"></i>
                 </div>
               </div>
               <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
@@ -59,8 +60,8 @@
           <div class="card-body px-4 py-4-5">
             <div class="row">
               <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-                <div class="stats-icon green mb-2">
-                  <i class="iconly-boldAdd-User"></i>
+                <div class="stats-icon  mb-2">
+                  <i class="fas fa-ring"></i>
                 </div>
               </div>
               <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
@@ -78,8 +79,8 @@
           <div class="card-body px-4 py-4-5">
             <div class="row">
               <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-                <div class="stats-icon blue mb-2">
-                  <i class="iconly-boldProfile"></i>
+                <div class="stats-icon green mb-2">
+                  <i class="fas fa-clipboard-list"></i>
                 </div>
               </div>
               <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
@@ -95,8 +96,8 @@
           <div class="card-body px-4 py-4-5">
             <div class="row">
               <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
-                <div class="stats-icon green mb-2">
-                  <i class="iconly-boldAdd-User"></i>
+                <div class="stats-icon bg-warning mb-2">
+                  <i class="fas fa-dolly-flatbed"></i>
                 </div>
               </div>
               <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
