@@ -234,7 +234,7 @@
 
               <?php if ($hasTableBuilding) : ?>
                 <li class="submenu-item  <?php echo (@$_page->submenu == 'table_building') ? 'active' : '' ?>">
-                  <a href="<?= base_url('laporan/table_building/all') ?>" class="submenu-link">Table Building </a>
+                  <a href="<?= base_url('laporan/table_building/all') ?>" class="submenu-link">Laporan Building </a>
 
                 </li>
               <?php endif; ?>

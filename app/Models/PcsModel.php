@@ -273,6 +273,91 @@ class PcsModel extends Model
         return $row;
     }
 
+    function getDataBuildingDate($start, $end, $shift = 'ALL')
+    {
+        $sql_shift = ($shift == 'ALL') ? '' : "AND SHF_CODE = '" . $shift . "'";
+        $sql_data = "SELECT MD.[MAT_SAP_CODE]
+        , MAT_CODE
+        , (SELECT TOP 1 EVS_START FROM PRW_EVENTS WHERE EV_CODE = 'PROD' AND EV_SUBCODE = 'MACH' AND PP_CODE = DC_DATA.PP_CODE AND MCH_CODE = DC_DATA.MCH_CODE AND MAT_SAP_CODE = DC_DATA.MAT_SAP_CODE AND EVS_SHIFT = DC_DATA.SHF_CODE AND CONVERT(date, EVS_START) = DC_DATA.PS_DATE ORDER BY EVS_START ASC) as TIME_START
+        , (SELECT TOP 1 EVS_START FROM PRW_EVENTS WHERE EV_CODE = 'PROD' AND EV_SUBCODE = 'MACH' AND PP_CODE = 'B02' AND MCH_CODE = DC_DATA.MCH_CODE AND MAT_SAP_CODE = DC_DATA.MAT_SAP_CODE AND EVS_SHIFT = DC_DATA.SHF_CODE AND CONVERT(date, EVS_START) = DC_DATA.PS_DATE ORDER BY EVS_START DESC) as TIME_END
+        , (SELECT COUNT(EVS_REAL_QTY) as JUMLAH FROM PRW_EVENTS WHERE EV_CODE = 'PROD' AND EV_SUBCODE = 'MACH' AND PP_CODE = 'B02' AND MCH_CODE = DC_DATA.MCH_CODE AND MAT_SAP_CODE = DC_DATA.MAT_SAP_CODE AND EVS_SHIFT = DC_DATA.SHF_CODE AND CONVERT(date, EVS_START) = CONVERT(date, DC_DATA.PS_DATE) ) as PS_QUANTITY
+            ,[PP_CODE]
+            ,[MCH_CODE]
+            ,CONVERT(date, [PS_DATE]) as PS_DATE
+            ,MD.[CNT_CODE]
+            ,[SHF_CODE]
+            ,[WM_CODE]
+            ,[PS_MCH_SIDE]
+            --,[PS_QUANTITY]
+        FROM [PCS].[dbo].[DC_PRODUCTION_DATA] as DC_DATA
+        JOIN MD_MATERIALS as MD ON DC_DATA.MAT_SAP_CODE = MD.MAT_SAP_CODE
+        WHERE PP_CODE  = 'B02'
+        AND CONVERT(date, PS_DATE) >= '" . $start . "'
+        AND CONVERT(date, PS_DATE) <= '" . $end . "'
+        " . $sql_shift . "
+        ORDER BY PS_DATE DESC";
+
+        $local = $this->db->table('planned_materials');
+        $result = $this->pcs->query($sql_data)->getResultArray();
+
+        $row = [];
+        $b = 0;
+        foreach ($result as $d) {
+            $matSapCode = $d['MAT_SAP_CODE'];
+            $tyress = $d['PS_QUANTITY'];
+            $mch_number = $d['MCH_CODE'];
+            $shf_code = $d['SHF_CODE'];
+            $local->where('MAT_SAP_CODE', $matSapCode);
+
+            $planning = $local->get()->getRowArray();
+
+            if ($planning == null) {
+                $planning = 0;
+            } else {
+                $planning = $planning;
+            }
+
+            $timeStart = $d['TIME_START'];
+            $timeEnd = $d['TIME_END'];
+
+            if ($planning == 0) {
+                $row['result'][$b]['actual'] = $tyress;
+                $row['result'][$b]['shf_code'] = $shf_code;
+                $row['result'][$b]['mat_sap_code'] = $matSapCode;
+                $row['result'][$b]['ip_code'] = 'Not Planned(' . $matSapCode . ')';
+                $row['result'][$b]['hours'] = 0;
+                $row['result'][$b]['planning'] = 0;
+                $row['result'][$b]['machine'] =  $mch_number;
+                $row['result'][$b]['time_start'] =  $timeStart;
+                $row['result'][$b]['time_end'] =  $timeEnd;
+            } else {
+
+
+                $diff = strtotime($timeEnd) - strtotime($timeStart);
+                // get hours + minutes decimal
+                $hours = $diff / 60 / 60;
+
+                if ($hours >= 0 && $hours < 1) {
+                    $hours = 1;
+                }
+
+                $row['result'][$b]['actual'] = $tyress;
+                $row['result'][$b]['shf_code'] = $shf_code;
+
+                $row['result'][$b]['planning'] = $planning['target_hour'];
+
+                $row['result'][$b]['hours'] = number_format(($tyress / ($planning['target_hour'] * $hours)) * 100, 2);
+                $row['result'][$b]['mat_sap_code'] = $matSapCode;
+                $row['result'][$b]['ip_code'] = $planning['ip_code'];
+                $row['result'][$b]['machine'] =  $mch_number;
+                $row['result'][$b]['time_start'] =  $timeStart;
+                $row['result'][$b]['time_end'] =  $timeEnd;
+            }
+            $b++;
+        }
+        return $row;
+    }
+
     public function getChartAjax($mch = null)
     {
         $chart = $this->getChartHours($mch);

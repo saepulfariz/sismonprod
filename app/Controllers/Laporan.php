@@ -71,13 +71,25 @@ class Laporan extends AdminBaseController
         $mt_code = ($mt_code == 'ALL') ? null : $mt_code;
         $this->permissionCheck('table_building');
 
+        $start = $this->request->getVar('start');
+        $end = $this->request->getVar('end');
+        $shift = $this->request->getVar('shift');
+
+        $start = ($start) ? $start : date('Y-m-d');
+        $end = ($end) ? $end : date('Y-m-d');
+        $shift = ($shift) ? $shift : 'ALL';
+
         $this->updatePageData([
             'title' => 'Table Building',
             'submenu' => 'table_building',
         ]);
 
         $data = [
-            'chart' => $this->modelpcs->getChartHours($mt_code)
+            // 'chart' => $this->modelpcs->getChartHours($mt_code),
+            'data' => $this->modelpcs->getDataBuildingDate($start, $end, $shift),
+            'start' => $start,
+            'end' => $end,
+            'shift' => $shift,
         ];
         return view($this->view . '/table_building', $data);
     }
