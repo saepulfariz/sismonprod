@@ -242,8 +242,8 @@ class SeedPermissions extends Seeder
                 'code'    => 'chart_building',
             ],
             [
-                'title'    => 'Laporan Table Building',
-                'code'    => 'table_building',
+                'title'    => 'Laporan Building',
+                'code'    => 'laporan_building',
             ],
 
             [

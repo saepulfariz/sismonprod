@@ -137,9 +137,10 @@ $routes->resource('planned_inbound', ['controller' => '\App\Controllers\PlannedI
 
 $routes->get('laporan/chart_building', '\App\Controllers\Laporan::index');
 $routes->get('laporan/frame_building/(:any)', '\App\Controllers\Laporan::frame_building/$1');
-$routes->get('laporan/table_building/(:any)', '\App\Controllers\Laporan::table_building/$1');
+$routes->get('laporan/building', '\App\Controllers\Laporan::building');
 
 $routes->get('laporan/ajax_chart_building', '\App\Controllers\Laporan::ajaxChartBuilding');
+$routes->get('laporan/ajax_building', '\App\Controllers\Laporan::ajaxBuilding');
 
 $routes->get('laporan/chart_curing', '\App\Controllers\Laporan::chart_curing');
 $routes->get('laporan/chart_curing/(:num)/(:num)', '\App\Controllers\Laporan::chart_curing/$1/$2');

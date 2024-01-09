@@ -208,11 +208,11 @@
         <?php
         $hasChartBuilding = hasPermissions('chart_building');
         $hasChartCuring = hasPermissions('chart_curing');
-        $hasTableBuilding = hasPermissions('table_building');
+        $hasLaporanBuilding = hasPermissions('laporan_building');
         $hasInboundList = hasPermissions('inbound_list');
         $hasInboundRim = hasPermissions('inbound_rim');
         ?>
-        <?php if ($hasInboundRim || $hasInboundList || $hasChartCuring || $hasChartBuilding || $hasTableBuilding) : ?>
+        <?php if ($hasInboundRim || $hasInboundList || $hasChartCuring || $hasChartBuilding || $hasLaporanBuilding) : ?>
           <li class="sidebar-item  has-sub <?= (@$_page->menu == 'laporan') ? 'active' : '' ?>">
             <a href="#" class='sidebar-link'>
               <i class="bi bi-grid-fill"></i>
@@ -232,9 +232,9 @@
 
               <?php endif; ?>
 
-              <?php if ($hasTableBuilding) : ?>
-                <li class="submenu-item  <?php echo (@$_page->submenu == 'table_building') ? 'active' : '' ?>">
-                  <a href="<?= base_url('laporan/table_building/all') ?>" class="submenu-link">Laporan Building </a>
+              <?php if ($hasLaporanBuilding) : ?>
+                <li class="submenu-item  <?php echo (@$_page->submenu == 'laporan_building') ? 'active' : '' ?>">
+                  <a href="<?= base_url('laporan/building') ?>" class="submenu-link">Laporan Building </a>
 
                 </li>
               <?php endif; ?>

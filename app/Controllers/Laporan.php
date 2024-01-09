@@ -65,11 +65,9 @@ class Laporan extends AdminBaseController
         return json_encode($this->modelpcs->getChartAjax($mch));
     }
 
-    function table_building($mt_code = 'BTUM')
+    function building()
     {
-        $mt_code = strtoupper($mt_code);
-        $mt_code = ($mt_code == 'ALL') ? null : $mt_code;
-        $this->permissionCheck('table_building');
+        $this->permissionCheck('laporan_building');
 
         $start = $this->request->getVar('start');
         $end = $this->request->getVar('end');
@@ -80,18 +78,39 @@ class Laporan extends AdminBaseController
         $shift = ($shift) ? $shift : 'ALL';
 
         $this->updatePageData([
-            'title' => 'Table Building',
-            'submenu' => 'table_building',
+            'title' => 'Laporan Building',
+            'submenu' => 'laporan_building',
         ]);
 
         $data = [
-            // 'chart' => $this->modelpcs->getChartHours($mt_code),
-            'data' => $this->modelpcs->getDataBuildingDate($start, $end, $shift),
+            // 'data' => $this->modelpcs->getDataBuildingDate($start, $end, $shift),
             'start' => $start,
             'end' => $end,
             'shift' => $shift,
         ];
-        return view($this->view . '/table_building', $data);
+        return view($this->view . '/laporan_building', $data);
+    }
+
+    function ajaxBuilding()
+    {
+        $this->permissionCheck('laporan_building');
+
+        $start = $this->request->getVar('start');
+        $end = $this->request->getVar('end');
+        $shift = $this->request->getVar('shift');
+
+        $start = ($start) ? $start : date('Y-m-d');
+        $end = ($end) ? $end : date('Y-m-d');
+        $shift = ($shift) ? $shift : 'ALL';
+
+        $data = [
+            'data' => $this->modelpcs->getDataBuildingDate($start, $end, $shift)['result'],
+            'start' => $start,
+            'end' => $end,
+            'shift' => $shift,
+        ];
+
+        return json_encode($data);
     }
 
 

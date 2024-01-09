@@ -295,7 +295,7 @@ class PcsModel extends Model
         AND CONVERT(date, PS_DATE) >= '" . $start . "'
         AND CONVERT(date, PS_DATE) <= '" . $end . "'
         " . $sql_shift . "
-        ORDER BY PS_DATE DESC";
+        ORDER BY PS_DATE, SHF_CODE DESC";
 
         $local = $this->db->table('planned_materials');
         $result = $this->pcs->query($sql_data)->getResultArray();
