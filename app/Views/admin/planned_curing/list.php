@@ -29,14 +29,14 @@
 
     </div>
     <div class="card-body">
-      <div class="table-responsive datatable-minimal">
+      <div class="table-responsive datatable-minimal" id="area_lod">
         <?php
 
         $hasEdit = hasPermissions($_page->menu . '_edit');
         $hasDelete = hasPermissions($_page->menu . '_delete');
 
         ?>
-        <table class="table w-100" id="table-export">
+        <table class="table w-100">
           <thead>
             <tr>
               <td>No</td>
@@ -52,31 +52,7 @@
           </thead>
           <tbody>
 
-            <?php $a = 1;
-            foreach ($data as $d) : ?>
-              <tr>
-                <td><?= $a++; ?></td>
-                <td><?= $d['ip_seven']; ?></td>
-                <td><?= $d['brand']; ?></td>
-                <td><?= $d['mch_type']; ?></td>
-                <td><?= $d['p_date']; ?></td>
-                <td><?= $d['rim']; ?></td>
-                <td><?= $d['qty']; ?></td>
-                <td><?= $d['status']; ?></td>
-                <td>
-                  <?php if ($hasEdit) : ?>
-                    <a href="<?= base_url($_page->link . '/' . $d['id'] . '/edit'); ?>" class="btn btn-sm btn-outline-primary" title="Edit" data-toggle="tooltip"><i class="fas fa-edit"></i></a>
-                  <?php endif ?>
-                  <?php if ($hasDelete) : ?>
-                    <form class="d-inline" action='<?= base_url($_page->link . '/' . $d['id']); ?>' method='post' enctype='multipart/form-data'>
-                      <?= csrf_field(); ?>
-                      <input type='hidden' name='_method' value='DELETE' />
-                      <button type='button' onclick='deleteTombol(this)' class='btn btn-sm btn-outline-danger'><i class="fa fa-trash"></i></button>
-                    </form>
-                  <?php endif ?>
-                </td>
-              </tr>
-            <?php endforeach; ?>
+
           </tbody>
         </table>
       </div>
@@ -117,3 +93,97 @@
   </div>
 </div>
 <?= $this->endSection('content') ?>
+<?= $this->section('script'); ?>
+
+<script>
+  // var table = $('.table').dataTable({
+  //     dom: 'Bflrtip',
+  //     buttons: [
+  //         'excel'
+  //     ]
+  // });
+
+  var datatable = $('.table').DataTable({
+    processing: false,
+    fixedHeader: true,
+    dom: 'Bflrtip',
+    buttons: [{
+      extend: 'excel',
+      // className: "btn btn-sm bg-tranparent btn-warning",
+      footer: true
+    }, ],
+    "pageLength": 5,
+    "lengthMenu": [
+      [5, 100, 1000, -1],
+      [5, 100, 1000, "ALL"],
+    ],
+    // order dari GAP gede
+    // order: [
+    //     [4, 'desc']
+    // ],
+    ajax: {
+      url: '<?= base_url($_page->link . '/ajax_table'); ?>',
+      type: "GET",
+      data: {},
+      beforeSend: function() {
+        loading('area_lod');
+
+      },
+      complete: function() {
+        unblock('area_lod');
+      },
+    },
+    columns: [{
+        data: 'no',
+        render: function(data, type, row, meta) {
+          return meta.row + 1;
+        }
+      }, {
+        data: 'ip_seven'
+      },
+      {
+        data: 'brand'
+      },
+      {
+        data: 'mch_type'
+      },
+      {
+        data: 'p_date'
+      },
+      {
+        data: 'rim'
+      },
+      {
+        data: 'qty'
+      },
+      {
+        data: 'status'
+      },
+      {
+        render: function(data, type, row, meta) {
+          var action = "";
+          <?php if ($hasEdit) : ?>
+            action += `'<a href="<?= base_url($_page->link); ?>/` + row.id + `/edit" class="btn btn-sm btn-outline-primary" title="Edit" data-toggle="tooltip"><i class="fas fa-edit"></i></a>'`;
+          <?php endif ?>
+          <?php if ($hasDelete) : ?>
+            action += `<form class="d-inline" action='<?= base_url($_page->link); ?>/` + row.id + `' method='post' enctype='multipart/form-data'>
+              <?= csrf_field(); ?>
+              <input type='hidden' name='_method' value='DELETE' />
+              <button type='button' onclick='deleteTombol(this)' class='btn btn-sm btn-outline-danger'><i class="fa fa-trash"></i></button>
+            </form>`;
+          <?php endif ?>
+          return action;
+        }
+      },
+    ],
+  });
+
+  function reloadTable() {
+    datatable.ajax.reload();
+  }
+
+  $('#submit').on('click', reloadTable);
+</script>
+
+
+<?= $this->endSection('script'); ?>

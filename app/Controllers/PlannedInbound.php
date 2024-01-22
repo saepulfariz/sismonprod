@@ -61,9 +61,18 @@ class PlannedInbound extends AdminBaseController
         $this->permissionCheck('planned_inbound_list');
 
         $data = [
-            'data' => $this->model->orderBy('id', 'DESC')->findAll()
+            // 'data' => $this->model->orderBy('id', 'DESC')->findAll()
         ];
         return view($this->view . '/list', $data);
+    }
+
+    public function ajax_table()
+    {
+        $this->permissionCheck('planned_inbound_list');
+        $data = [
+            'data' => $this->model->orderBy('id', 'DESC')->findAll()
+        ];
+        return json_encode($data);
     }
 
     public function show($id)
@@ -280,7 +289,7 @@ class PlannedInbound extends AdminBaseController
             $update = 0;
 
             if (!isset($sheetData[2][2]) || !isset($sheetData[2][3]) || !isset($sheetData[2][4]) || !isset($sheetData[2][5]) || !isset($sheetData[2][6]) || !isset($sheetData[2][7]) || !isset($sheetData[2][8])) {
-                $this->alert->set('warning', 'Warning', 'Please Input Date Column, Example 19 May');
+                setAlert('warning', 'Warning', 'Please Input Date Column, Example 19 May');
 
                 return redirect()->to($this->link);
             }

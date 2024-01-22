@@ -120,6 +120,7 @@ $routes->group('settings/email_templates', function ($routes) {
 $routes->resource('settings/email_templates', ['controller' => '\App\Controllers\EmailTemplates',]);
 
 $routes->post('planned_materials/import', '\App\Controllers\PlannedMaterials::import');
+$routes->get('planned_materials/ajax_table', '\App\Controllers\PlannedMaterials::ajax_table');
 $routes->get('planned_materials/ajax_ipcode', '\App\Controllers\PlannedMaterials::ajaxIpCode');
 $routes->resource('planned_materials', ['controller' => '\App\Controllers\PlannedMaterials']);
 
@@ -128,10 +129,12 @@ $routes->get('sections/ajax_sections', '\App\Controllers\Sections::ajaxSections'
 $routes->resource('sections', ['controller' => '\App\Controllers\Sections']);
 
 $routes->post('planned_curing/import', '\App\Controllers\PlannedCuring::import');
+$routes->get('planned_curing/ajax_table', '\App\Controllers\PlannedCuring::ajax_table');
 $routes->get('planned_curing/ajax_ipcode', '\App\Controllers\PlannedCuring::ajaxIpCode');
 $routes->resource('planned_curing', ['controller' => '\App\Controllers\PlannedCuring']);
 
 $routes->post('planned_inbound/import', '\App\Controllers\PlannedInbound::import');
+$routes->get('planned_inbound/ajax_table', '\App\Controllers\PlannedInbound::ajax_table');
 $routes->get('planned_inbound/ajax_ipcode', '\App\Controllers\PlannedInbound::ajaxIpCode');
 $routes->resource('planned_inbound', ['controller' => '\App\Controllers\PlannedInbound']);
 

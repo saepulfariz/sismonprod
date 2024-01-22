@@ -27,9 +27,18 @@ class PlannedMaterials extends AdminBaseController
         $this->permissionCheck('planned_materials_list');
 
         $data = [
-            'data' => $this->model->orderBy('id', 'DESC')->findAll()
+            // 'data' => $this->model->orderBy('id', 'DESC')->findAll()
         ];
         return view($this->view . '/list', $data);
+    }
+
+    public function ajax_table()
+    {
+        $this->permissionCheck('planned_materials_list');
+        $data = [
+            'data' => $this->model->orderBy('id', 'DESC')->findAll()
+        ];
+        return json_encode($data);
     }
 
     public function show($id)
