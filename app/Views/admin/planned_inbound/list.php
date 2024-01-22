@@ -162,7 +162,7 @@
         render: function(data, type, row, meta) {
           var action = "";
           <?php if ($hasEdit) : ?>
-            action += `'<a href="<?= base_url($_page->link); ?>/` + row.id + `/edit" class="btn btn-sm btn-outline-primary" title="Edit" data-toggle="tooltip"><i class="fas fa-edit"></i></a>'`;
+            action += `<a href="<?= base_url($_page->link); ?>/` + row.id + `/edit" class="btn btn-sm btn-outline-primary" title="Edit" data-toggle="tooltip"><i class="fas fa-edit"></i></a>`;
           <?php endif ?>
           <?php if ($hasDelete) : ?>
             action += `<form class="d-inline" action='<?= base_url($_page->link); ?>/` + row.id + `' method='post' enctype='multipart/form-data'>
