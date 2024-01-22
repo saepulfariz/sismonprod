@@ -109,13 +109,13 @@ abstract class AdminBaseController extends Controller
   {
 
     if (!is_logged()) {
-      $this->response->redirect('/login');
+      $this->response->redirect(base_url('/login'));
     }
 
     // || $key != 'profile'
     if ($key != 'dashboard' && $key != 'profile') {
       if (!hasPermissions($key)) {
-        $this->response->redirect('/errors/denied');
+        $this->response->redirect(base_url('/errors/denied'));
       }
     }
   }
