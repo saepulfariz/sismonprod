@@ -48,4 +48,4 @@ Options -Indexes
 	ServerSignature Off
 # Disable server signature end
 
-php_value max_execution_time 120
+# php_value max_execution_time 120
